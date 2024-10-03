@@ -39,6 +39,20 @@ struct MapView: View {
                         .padding(.bottom)
                 }
             
+            if(!viewModel.searchResults.isEmpty) {
+                List(viewModel.searchResults, id: \.self) { result in
+                    Button {
+                        
+                    } label: {
+                        Text(result.title)
+                            .font(.body)
+                            .foregroundStyle(.primary)
+                    }
+                }
+                .listStyle(PlainListStyle())
+                .frame(height: 200)
+            }
+            
             Map(coordinateRegion: $region)
             .ignoresSafeArea()
         }

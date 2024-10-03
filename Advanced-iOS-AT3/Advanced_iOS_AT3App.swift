@@ -51,7 +51,7 @@ struct Advanced_iOS_AT3App: App {
     
     var body: some Scene {
         WindowGroup {
-            SearchView()
+            MapView()
         }
     }
 }

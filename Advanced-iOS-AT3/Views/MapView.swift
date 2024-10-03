@@ -30,6 +30,7 @@ struct MapView: View {
             .ignoresSafeArea()
         }
         .onAppear {
+            locationManager.checkLocationAuthorization()
             isFocusedTextField = true
         }
     }

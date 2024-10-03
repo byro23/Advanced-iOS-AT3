@@ -7,52 +7,32 @@
 
 import SwiftUI
 import MapKit
-import GoogleMaps
-
-struct GoogleMapView: UIViewRepresentable {
-    func makeUIView(context: Context) -> GMSMapView {
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        return mapView
-    }
-
-    func updateUIView(_ uiView: GMSMapView, context: Context) {
-        // Update your map view if needed
-    }
-}
 
 struct MapView: View {
     
-    // -33.884218746005494, 151.19973840164022
+    @StateObject private var viewModel = MapViewModel()
     
-    @StateObject var viewModel = MapViewModel()
+    private let address: AddressResult
     
-    @State private var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: -33.884218746005494, longitude: 151.19973840164022),
-            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        )
-    )
+    init(address: AddressResult) {
+        self.address = address
+    }
     
     var body: some View {
-        VStack {
-            HeaderView()
-                .padding()
-            
-            HStack {
-                TextField("Search for a location", text: $viewModel.queryFragment)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                
+        Map(
+            coordinateRegion: $viewModel.region,
+            annotationItems: viewModel.annotationItems,
+            annotationContent: { item in
+                MapMarker(coordinate: item.coordinate)
             }
-            
-            Map(position: $cameraPosition)
+        )
+        .onAppear {
+            self.viewModel.getPlace(from: address)
         }
-        .searchable(text: $viewModel.queryFragment)
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 
 #Preview {
-    MapView()
+    MapView(address: AddressResult.MOCK_ADDRESS)
 }

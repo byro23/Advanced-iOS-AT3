@@ -12,7 +12,7 @@ struct AddressRow: View {
         
     var body: some View {
         NavigationLink {
-            MapView(address: address)
+            MapView()
         } label: {
             VStack(alignment: .leading) {
                 Text(address.title)

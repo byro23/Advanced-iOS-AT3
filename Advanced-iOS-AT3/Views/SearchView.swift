@@ -17,7 +17,10 @@ struct SearchView: View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 0) {
                 
-                TextField("Type address: ", text: $viewModel.searchableText)
+                HeaderView()
+                    .padding()
+                
+                TextField("Type address or region: ", text: $viewModel.searchableText)
                     .padding()
                     .autocorrectionDisabled()
                     .focused($isFocusedTextField)

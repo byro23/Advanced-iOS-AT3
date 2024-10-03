@@ -11,8 +11,15 @@ import MapKit
 
 class MapViewModel: ObservableObject {
 
-    @Published var region = MKCoordinateRegion()
     @Published private(set) var annotationItems: [AnnotationItem] = []
+    
+    @Published var region: MKCoordinateRegion = MKCoordinateRegion(
+        center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
+    )
+    
+    private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
+    
+    @Published var searchableText: String = ""
     
     func getPlace(from address: AddressResult) {
         let request = MKLocalSearch.Request()

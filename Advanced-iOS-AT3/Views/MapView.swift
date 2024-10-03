@@ -11,28 +11,30 @@ import MapKit
 struct MapView: View {
     
     @StateObject private var viewModel = MapViewModel()
-    
-    private let address: AddressResult
-    
-    init(address: AddressResult) {
-        self.address = address
-    }
+    @StateObject private var locationManager = LocationManager()
+    @FocusState private var isFocusedTextField: Bool
     
     var body: some View {
-        Map(
-            coordinateRegion: $viewModel.region,
-            annotationItems: viewModel.annotationItems,
-            annotationContent: { item in
-                MapMarker(coordinate: item.coordinate)
-            }
-        )
-        .onAppear {
-            self.viewModel.getPlace(from: address)
+        
+        VStack() {
+            HeaderView()
+                .padding()
+            
+            TextField("Search an address or region for hikes", text: $viewModel.searchableText)
+                .padding()
+                .autocorrectionDisabled()
+                .focused($isFocusedTextField)
+                .font(.title2)
+            
+            Map(coordinateRegion: $viewModel.region)
+            .ignoresSafeArea()
         }
-        .edgesIgnoringSafeArea(.bottom)
+        .onAppear {
+            isFocusedTextField = true
+        }
     }
 }
 
 #Preview {
-    MapView(address: AddressResult.MOCK_ADDRESS)
+    MapView()
 }

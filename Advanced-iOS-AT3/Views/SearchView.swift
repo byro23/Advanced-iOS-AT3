@@ -14,35 +14,40 @@ struct SearchView: View {
     @StateObject var viewModel = SearchViewModel()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            
-            TextField("Type address: ", text: $viewModel.searchableText)
-                .autocorrectionDisabled()
-                .focused($isFocusedTextField)
-                .font(.title)
-                .onReceive(
-                    viewModel.$searchableText.debounce(
-                        for: .seconds(1),
-                        scheduler: DispatchQueue.main
-                    )
-                ) {
-                    viewModel.searchAddress($0)
+        NavigationStack {
+            VStack(alignment: .leading, spacing: 0) {
+                
+                TextField("Type address: ", text: $viewModel.searchableText)
+                    .padding()
+                    .autocorrectionDisabled()
+                    .focused($isFocusedTextField)
+                    .font(.title)
+                    .onReceive(
+                        viewModel.$searchableText.debounce(
+                            for: .seconds(1),
+                            scheduler: DispatchQueue.main
+                        )
+                    ) {
+                        viewModel.searchAddress($0)
+                    }
+                    .background(Color(.systemBackground))
+                    .overlay {
+                        ClearButton(text: $viewModel.searchableText)
+                            .padding(.trailing)
+                            .padding(.top, 8)
+                    }
+                    .onAppear {
+                        isFocusedTextField = true
+                    }
+                List(self.viewModel.results) { address in
+                    AddressRow(address: address)
+                        .listRowBackground(backgroundColor)
                 }
-                .background(Color(.systemBackground))
-                .overlay {
-                    ClearButton(text: $viewModel.searchableText)
-                        .padding(.trailing)
-                        .padding(.top, 8)
-                }
-                .onAppear {
-                    isFocusedTextField = true
-                }
-            List(self.viewModel.results) { address in
-                AddressRow(address: address)
-                    .listRowBackground(backgroundColor)
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
+            .background(backgroundColor)
+            .edgesIgnoringSafeArea(.bottom)
         }
     }
     

@@ -1,59 +1,67 @@
-//
-//  LocationManager.swift
-//  Advanced-iOS-AT3
-//
-//  Created by Byron Lester on 3/10/2024.
-//
-
 import Foundation
 import CoreLocation
 import MapKit
 
-// Sydney Coordinates 33.8688° S, 151.2093° E
-
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    
+    // Ultimo Coordinates: -33.87978316775921, 151.19853677853445
     @Published var lastKnownLocation: CLLocationCoordinate2D?
     @Published var region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 33.8688, longitude: 151.2093), // Default to Sydney
+        center: CLLocationCoordinate2D(latitude: -33.87978316775921, longitude: 151.19853677853445), // Default to Sydney
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
+    
+    var manager = CLLocationManager()
+    
+    // Lazy initialization for CLLocationManager
+    /*private lazy var manager: CLLocationManager = {
+        let manager = CLLocationManager()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        return manager
+    }() */
+    
+    // Check location authorization status and start updating location
+    func checkAuthorizationStatus() {
+        manager.delegate = self
+        manager.startUpdatingLocation() // Start location updates
+        
+        switch manager.authorizationStatus {
+        
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization() // Request authorization
+        
+        case .restricted, .denied:
+            print("Location access is restricted or denied.")
+            
+        case .authorizedAlways, .authorizedWhenInUse:
+            if let location = manager.location?.coordinate {
+                updateRegion(for: location)
+            }
+        
+        @unknown default:
+            print("Unknown authorization status.")
+        }
+    }
+    
+    // Called when authorization changes
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        checkAuthorizationStatus()
+    }
+    
+    // Called when location updates
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first?.coordinate {
+            updateRegion(for: location)
+        }
+    }
+    
+    // Helper function to update the map region
+    private func updateRegion(for location: CLLocationCoordinate2D) {
+        lastKnownLocation = location
+        region = MKCoordinateRegion(
+            center: location,
             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
         )
-    
-      var manager = CLLocationManager()
-      
-      
-      func checkLocationAuthorization() {
-          
-          manager.delegate = self
-          manager.startUpdatingLocation()
-          
-          switch manager.authorizationStatus {
-          case .notDetermined://The user choose allow or deny your app to get the location yet
-              manager.requestWhenInUseAuthorization()
-              
-          case .restricted://The user cannot change this app’s status, possibly due to active restrictions such as parental controls being in place.
-              print("Location restricted")
-              
-          case .denied://The user dennied your app to get location or disabled the services location or the phone is in airplane mode
-              print("Location denied")
-              
-          case .authorizedAlways://This authorization allows you to use all location services and receive location events whether or not your app is in use.
-              print("Location authorizedAlways")
-              
-          case .authorizedWhenInUse://This authorization allows you to use all location services and receive location events only when your app is in use
-              print("Location authorized when in use")
-              lastKnownLocation = manager.location?.coordinate
-              
-          @unknown default:
-              print("Location service disabled")
-          
-          }
-      }
-      
-      func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { // every time authorization status changes
-          checkLocationAuthorization()
-      }
-      
-      func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-          lastKnownLocation = locations.first?.coordinate
-      }
+    }
 }

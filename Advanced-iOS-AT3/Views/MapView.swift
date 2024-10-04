@@ -78,7 +78,7 @@ struct MapView: View {
                 
                 if(!viewModel.isSearching) {
                     Map(coordinateRegion: $viewModel.region)
-                        .ignoresSafeArea()
+                        //.ignoresSafeArea()
                 }
                 
                 

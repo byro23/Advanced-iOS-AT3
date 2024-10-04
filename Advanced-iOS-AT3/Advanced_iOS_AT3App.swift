@@ -51,10 +51,16 @@ struct Advanced_iOS_AT3App: App {
     // Observing the appearance mode stored in UserDefaults
     @AppStorage("appearanceMode") private var appearanceMode: SettingsView.AppearanceMode = .system
     
+    @StateObject private var navigationController = NavigationController()
+    
     var body: some Scene {
         WindowGroup {
-            MapView()
-                .preferredColorScheme(colorScheme(from: appearanceMode))
+            NavigationStack {
+                MapView()
+                    .preferredColorScheme(colorScheme(from: appearanceMode))
+            }
+            .environmentObject(navigationController)
+            
         }
     }
     

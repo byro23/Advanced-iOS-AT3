@@ -48,10 +48,25 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct Advanced_iOS_AT3App: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    // Observing the appearance mode stored in UserDefaults
+    @AppStorage("appearanceMode") private var appearanceMode: SettingsView.AppearanceMode = .system
     
     var body: some Scene {
         WindowGroup {
             MapView()
+                .preferredColorScheme(colorScheme(from: appearanceMode))
+        }
+    }
+    
+    // Convert the stored AppearanceMode to SwiftUI ColorScheme
+    private func colorScheme(from mode: SettingsView.AppearanceMode) -> ColorScheme? {
+        switch mode {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .system:
+            return nil // Follow system setting
         }
     }
 }

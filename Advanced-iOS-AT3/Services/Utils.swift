@@ -6,3 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+
+enum Theme {
+    static let primary = Color("Primary")
+}

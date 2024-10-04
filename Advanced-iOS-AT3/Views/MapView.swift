@@ -13,6 +13,7 @@ struct MapView: View {
     @StateObject private var viewModel = MapViewModel()
     @StateObject private var locationManager = LocationManager()
     @FocusState private var isFocusedTextField: Bool
+    @Environment(\.colorScheme) var colorScheme // Detect light or dark mode
     
     /*
     @State var region = MKCoordinateRegion(
@@ -23,44 +24,70 @@ struct MapView: View {
     
     var body: some View {
         
-        VStack() {
-            HeaderView()
-                .padding(.top)
+        ZStack {
             
-            TextField("Search an address or region for hikes", text: $viewModel.searchableText)
-                .padding(.horizontal)
-                .padding(.bottom)
-                .textFieldStyle(.roundedBorder)
-                .autocorrectionDisabled()
-                .focused($isFocusedTextField)
-                .font(.title2)
-                .overlay {
-                    ClearButton(text: $viewModel.searchableText)
-                        .padding(.trailing, 18)
-                        .padding(.bottom)
+            VStack() {
+                HeaderView()
+                    .padding(.top)
+                
+                TextField("Search an address or region for hikes", text: $viewModel.searchableText)
+                    .padding() // Add padding inside the TextField
+                    .background(colorScheme == .dark ? Color.gray.opacity(0.2) : Color.gray.opacity(0.2)) // Light gray background for dark mode
+                    .cornerRadius(10) // Rounded corners to match the overlay
+                    .foregroundColor(colorScheme == .dark ? Color.white : Color.black) // White text in dark mode
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(colorScheme == .dark ? Color.white : Color.black, lineWidth: 2) // Bright border in dark mode
+                    )
+                    .padding(.horizontal)
+                    .padding(.bottom)
+                    .textFieldStyle(.plain)
+                    .autocorrectionDisabled()
+                    .focused($isFocusedTextField)
+                    .font(.title3)
+                    .overlay {
+                        ClearButton(text: $viewModel.searchableText)
+                            .padding(.trailing, 20)
+                            .padding(.bottom)
+                    }
+                
+                if(!viewModel.searchResults.isEmpty) {
+                    List(viewModel.searchResults, id: \.self) { result in
+                        Button {
+                            viewModel.selectLocation(for: result)
+                            isFocusedTextField = false
+                        } label: {
+                            Text(result.title)
+                                .font(.body)
+                                .foregroundStyle(.primary)
+                        }
+                    }
+                    .listStyle(.plain)
                 }
-            
-            if(!viewModel.searchResults.isEmpty) {
-                List(viewModel.searchResults, id: \.self) { result in
+                else if(viewModel.searchResults.isEmpty && !viewModel.searchResults.isEmpty) {
+                    Text("No locations in Australia by that name.")
+                    
                     Button {
-                        viewModel.selectLocation(for: result)
+                        viewModel.searchableText = ""
                     } label: {
-                        Text(result.title)
-                            .font(.body)
-                            .foregroundStyle(.primary)
+                        Text("Clear search?")
                     }
                 }
-                .listStyle(PlainListStyle())
-                .frame(height: 200)
+                
+                Spacer()
+                
+                if(!viewModel.isSearching) {
+                    Map(coordinateRegion: $viewModel.region)
+                        .ignoresSafeArea()
+                }
+                
+                
             }
-            
-            Map(coordinateRegion: $viewModel.region)
-            .ignoresSafeArea()
-        }
-        .onAppear {
-            locationManager.checkAuthorizationStatus()
-            viewModel.region = locationManager.region
-            isFocusedTextField = true
+            .onAppear {
+                locationManager.checkAuthorizationStatus()
+                viewModel.region = locationManager.region
+                isFocusedTextField = true
+            }
         }
     }
 }

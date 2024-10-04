@@ -18,6 +18,10 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
     
+    var isSearching: Bool {
+        return !searchableText.isEmpty
+    }
+    
     override init() {
         super.init() // Initialize the superclass (NSObject)
         
@@ -79,6 +83,8 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                     center: coordinate,
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 )
+                
+                self.searchableText = ""
             }
         }
     }

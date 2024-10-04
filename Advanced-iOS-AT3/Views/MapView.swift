@@ -14,10 +14,11 @@ struct MapView: View {
     @StateObject private var locationManager = LocationManager()
     @FocusState private var isFocusedTextField: Bool
     
+    /*
     @State var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: -33.87978316775921, longitude: 151.19853677853445), // Default to Sydney
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-    )
+    ) */
     
     
     var body: some View {
@@ -42,7 +43,7 @@ struct MapView: View {
             if(!viewModel.searchResults.isEmpty) {
                 List(viewModel.searchResults, id: \.self) { result in
                     Button {
-                        
+                        viewModel.selectLocation(for: result)
                     } label: {
                         Text(result.title)
                             .font(.body)
@@ -53,12 +54,12 @@ struct MapView: View {
                 .frame(height: 200)
             }
             
-            Map(coordinateRegion: $region)
+            Map(coordinateRegion: $viewModel.region)
             .ignoresSafeArea()
         }
         .onAppear {
             locationManager.checkAuthorizationStatus()
-            region = locationManager.region
+            viewModel.region = locationManager.region
             isFocusedTextField = true
         }
     }

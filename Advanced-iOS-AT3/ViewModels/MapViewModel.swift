@@ -9,6 +9,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
     )
     
+    // Ultimo Area
     private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
     
     @Published var searchableText: String = ""
@@ -37,6 +38,13 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         // Set searchCompleter properties
         searchCompleter.resultTypes = .address
         searchCompleter.delegate = self
+        
+        let australiaRegion = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: -25.2744, longitude: 133.7751),
+            span: MKCoordinateSpan(latitudeDelta: 35.0, longitudeDelta: 40.0)
+        )
+        
+        searchCompleter.region = australiaRegion
     }
     
     // Method to get place from selected address and update the map region
@@ -61,6 +69,20 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         }
     }
     
+    func selectLocation(for suggestion: MKLocalSearchCompletion) {
+        let searchRequest = MKLocalSearch.Request(completion: suggestion)
+        let search = MKLocalSearch(request: searchRequest)
+        
+        search.start { response, error in
+            if let coordinate = response?.mapItems.first?.placemark.coordinate {
+                self.region = MKCoordinateRegion(
+                    center: coordinate,
+                    span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                )
+            }
+        }
+    }
+    
     // MARK: - MKLocalSearchCompleterDelegate methods
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
@@ -71,4 +93,5 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         print("Error occurred during search completion: \(error.localizedDescription)")
     }
+    
 }

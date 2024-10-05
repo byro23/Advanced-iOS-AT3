@@ -55,7 +55,7 @@ struct MapView: View {
                 if(!viewModel.searchResults.isEmpty) {
                     List(viewModel.searchResults, id: \.self) { result in
                         Button {
-                            viewModel.selectLocation(for: result)
+                            viewModel.selectLocation(for: result, context: viewContext)
                             isFocusedTextField = false
                         } label: {
                             Text(result.title)

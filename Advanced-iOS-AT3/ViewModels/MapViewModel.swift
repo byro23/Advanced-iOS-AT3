@@ -12,6 +12,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     // Ultimo Area
     private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
     
+    
     @Published var searchableText: String = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     

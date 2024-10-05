@@ -7,34 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C161FE4A2C9A74460020469D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C161FE492C9A74460020469D /* FirebaseAnalytics */; };
-		C161FE4C2C9A74460020469D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C161FE4B2C9A74460020469D /* FirebaseAuth */; };
-		C161FE4E2C9A74460020469D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C161FE4D2C9A74460020469D /* FirebaseFirestore */; };
-		C1A719F72CAE1B6200B9B9EF /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1A719F62CAE1B6200B9B9EF /* MapKit.framework */; };
+		C1EF1C712CB0B76100DB09D6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C1EF1C702CB0B76100DB09D6 /* FirebaseAuth */; };
+		C1EF1C732CB0B76100DB09D6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C1EF1C722CB0B76100DB09D6 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		C161FE2A2C9A64D50020469D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C161FE112C9A64D20020469D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C161FE182C9A64D20020469D;
-			remoteInfo = "Advanced-iOS-AT3";
-		};
-		C161FE342C9A64D50020469D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C161FE112C9A64D20020469D /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C161FE182C9A64D20020469D;
-			remoteInfo = "Advanced-iOS-AT3";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Advanced-iOS-AT3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C161FE292C9A64D50020469D /* Advanced-iOS-AT3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Advanced-iOS-AT3Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C161FE332C9A64D50020469D /* Advanced-iOS-AT3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Advanced-iOS-AT3UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C1A719F62CAE1B6200B9B9EF /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -50,24 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C161FE4A2C9A74460020469D /* FirebaseAnalytics in Frameworks */,
-				C161FE4C2C9A74460020469D /* FirebaseAuth in Frameworks */,
-				C1A719F72CAE1B6200B9B9EF /* MapKit.framework in Frameworks */,
-				C161FE4E2C9A74460020469D /* FirebaseFirestore in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C161FE262C9A64D50020469D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C161FE302C9A64D50020469D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				C1EF1C712CB0B76100DB09D6 /* FirebaseAuth in Frameworks */,
+				C1EF1C732CB0B76100DB09D6 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,7 +40,6 @@
 			isa = PBXGroup;
 			children = (
 				C161FE1B2C9A64D20020469D /* Advanced-iOS-AT3 */,
-				C196AB4D2CAE14C200580F4D /* Frameworks */,
 				C161FE1A2C9A64D20020469D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,18 +48,8 @@
 			isa = PBXGroup;
 			children = (
 				C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */,
-				C161FE292C9A64D50020469D /* Advanced-iOS-AT3Tests.xctest */,
-				C161FE332C9A64D50020469D /* Advanced-iOS-AT3UITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		C196AB4D2CAE14C200580F4D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				C1A719F62CAE1B6200B9B9EF /* MapKit.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -121,53 +72,12 @@
 			);
 			name = "Advanced-iOS-AT3";
 			packageProductDependencies = (
-				C161FE492C9A74460020469D /* FirebaseAnalytics */,
-				C161FE4B2C9A74460020469D /* FirebaseAuth */,
-				C161FE4D2C9A74460020469D /* FirebaseFirestore */,
+				C1EF1C702CB0B76100DB09D6 /* FirebaseAuth */,
+				C1EF1C722CB0B76100DB09D6 /* FirebaseFirestore */,
 			);
 			productName = "Advanced-iOS-AT3";
 			productReference = C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */;
 			productType = "com.apple.product-type.application";
-		};
-		C161FE282C9A64D50020469D /* Advanced-iOS-AT3Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C161FE402C9A64D50020469D /* Build configuration list for PBXNativeTarget "Advanced-iOS-AT3Tests" */;
-			buildPhases = (
-				C161FE252C9A64D50020469D /* Sources */,
-				C161FE262C9A64D50020469D /* Frameworks */,
-				C161FE272C9A64D50020469D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C161FE2B2C9A64D50020469D /* PBXTargetDependency */,
-			);
-			name = "Advanced-iOS-AT3Tests";
-			packageProductDependencies = (
-			);
-			productName = "Advanced-iOS-AT3Tests";
-			productReference = C161FE292C9A64D50020469D /* Advanced-iOS-AT3Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		C161FE322C9A64D50020469D /* Advanced-iOS-AT3UITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C161FE432C9A64D50020469D /* Build configuration list for PBXNativeTarget "Advanced-iOS-AT3UITests" */;
-			buildPhases = (
-				C161FE2F2C9A64D50020469D /* Sources */,
-				C161FE302C9A64D50020469D /* Frameworks */,
-				C161FE312C9A64D50020469D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C161FE352C9A64D50020469D /* PBXTargetDependency */,
-			);
-			name = "Advanced-iOS-AT3UITests";
-			packageProductDependencies = (
-			);
-			productName = "Advanced-iOS-AT3UITests";
-			productReference = C161FE332C9A64D50020469D /* Advanced-iOS-AT3UITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -182,14 +92,6 @@
 					C161FE182C9A64D20020469D = {
 						CreatedOnToolsVersion = 16.0;
 					};
-					C161FE282C9A64D50020469D = {
-						CreatedOnToolsVersion = 16.0;
-						TestTargetID = C161FE182C9A64D20020469D;
-					};
-					C161FE322C9A64D50020469D = {
-						CreatedOnToolsVersion = 16.0;
-						TestTargetID = C161FE182C9A64D20020469D;
-					};
 				};
 			};
 			buildConfigurationList = C161FE142C9A64D20020469D /* Build configuration list for PBXProject "Advanced-iOS-AT3" */;
@@ -202,7 +104,7 @@
 			mainGroup = C161FE102C9A64D20020469D;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				C161FE482C9A74460020469D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C161FE1A2C9A64D20020469D /* Products */;
@@ -210,28 +112,12 @@
 			projectRoot = "";
 			targets = (
 				C161FE182C9A64D20020469D /* Advanced-iOS-AT3 */,
-				C161FE282C9A64D50020469D /* Advanced-iOS-AT3Tests */,
-				C161FE322C9A64D50020469D /* Advanced-iOS-AT3UITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C161FE172C9A64D20020469D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C161FE272C9A64D50020469D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C161FE312C9A64D50020469D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -248,34 +134,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C161FE252C9A64D50020469D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C161FE2F2C9A64D50020469D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C161FE2B2C9A64D50020469D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C161FE182C9A64D20020469D /* Advanced-iOS-AT3 */;
-			targetProxy = C161FE2A2C9A64D50020469D /* PBXContainerItemProxy */;
-		};
-		C161FE352C9A64D50020469D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C161FE182C9A64D20020469D /* Advanced-iOS-AT3 */;
-			targetProxy = C161FE342C9A64D50020469D /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C161FE3B2C9A64D50020469D /* Debug */ = {
@@ -414,6 +273,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -444,6 +304,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -454,74 +315,6 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		C161FE412C9A64D50020469D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Advanced-iOS-AT3Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Advanced-iOS-AT3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Advanced-iOS-AT3";
-			};
-			name = Debug;
-		};
-		C161FE422C9A64D50020469D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Advanced-iOS-AT3Tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Advanced-iOS-AT3.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Advanced-iOS-AT3";
-			};
-			name = Release;
-		};
-		C161FE442C9A64D50020469D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Advanced-iOS-AT3UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Advanced-iOS-AT3";
-			};
-			name = Debug;
-		};
-		C161FE452C9A64D50020469D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "UTS.Advanced-iOS-AT3UITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Advanced-iOS-AT3";
 			};
 			name = Release;
 		};
@@ -546,51 +339,28 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C161FE402C9A64D50020469D /* Build configuration list for PBXNativeTarget "Advanced-iOS-AT3Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C161FE412C9A64D50020469D /* Debug */,
-				C161FE422C9A64D50020469D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C161FE432C9A64D50020469D /* Build configuration list for PBXNativeTarget "Advanced-iOS-AT3UITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C161FE442C9A64D50020469D /* Debug */,
-				C161FE452C9A64D50020469D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C161FE482C9A74460020469D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 11.2.0;
+				minimumVersion = 11.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C161FE492C9A74460020469D /* FirebaseAnalytics */ = {
+		C1EF1C702CB0B76100DB09D6 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C161FE482C9A74460020469D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		C161FE4B2C9A74460020469D /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C161FE482C9A74460020469D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		C161FE4D2C9A74460020469D /* FirebaseFirestore */ = {
+		C1EF1C722CB0B76100DB09D6 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C161FE482C9A74460020469D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */

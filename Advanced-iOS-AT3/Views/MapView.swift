@@ -64,13 +64,14 @@ struct MapView: View {
                     }
                     .listStyle(.plain)
                 }
-                else if(viewModel.searchResults.isEmpty && !viewModel.searchResults.isEmpty) {
+                else if(viewModel.searchResults.isEmpty && !viewModel.searchableText.isEmpty && viewModel.searchableText.count > 3) {
                     Text("No locations in Australia by that name.")
                     
                     Button {
                         viewModel.searchableText = ""
                     } label: {
                         Text("Clear search?")
+                            .padding(6)
                     }
                 }
                 

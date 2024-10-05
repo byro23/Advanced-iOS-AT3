@@ -15,6 +15,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
     @Published var searchableText: String = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
+    @Published var recentSearches: [SearchQuery] = []
     
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
@@ -107,6 +108,19 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             print("Failed to save SearchQuery: \(error.localizedDescription)")
         }
         
+    }
+    
+    // Function to fetch SearchQuery objects from Core Data
+    func fetchRecentSearches(context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<SearchQuery> = SearchQuery.fetchRequest()  // Create fetch request
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \SearchQuery.date, ascending: false)]  // Sort by date
+        
+        do {
+            // Execute fetch request and assign the result to recentSearches
+            recentSearches = try context.fetch(fetchRequest)
+        } catch {
+            print("Error fetching recent searches: \(error.localizedDescription)")
+        }
     }
     
     // MARK: - MKLocalSearchCompleterDelegate methods

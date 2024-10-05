@@ -15,6 +15,7 @@ struct MapView: View {
     @FocusState private var isFocusedTextField: Bool
     @Environment(\.colorScheme) var colorScheme // Detect light or dark mode
     @Environment(\.managedObjectContext) private var viewContext
+    @State private var showRecentSearches = false // State variable to control the popover
     
     /*
     @State var region = MKCoordinateRegion(
@@ -41,7 +42,6 @@ struct MapView: View {
                             .stroke(colorScheme == .dark ? Color.white : Color.black, lineWidth: 2) // Bright border in dark mode
                     )
                     .padding(.horizontal)
-                    .padding(.bottom)
                     .textFieldStyle(.plain)
                     .autocorrectionDisabled()
                     .focused($isFocusedTextField)
@@ -51,6 +51,24 @@ struct MapView: View {
                             .padding(.trailing, 20)
                             .padding(.bottom)
                     }
+                
+                if(!viewModel.recentSearches.isEmpty) {
+                    HStack {
+                        Button {
+                            showRecentSearches.toggle()
+                        } label: {
+                            Text("Recent searches")
+                                .padding(.horizontal)
+                                .padding(.bottom, 8)
+                        }
+                        .popover(isPresented: $showRecentSearches) {
+                            
+                        }
+                        
+                        Spacer()
+                    }
+                }
+                
                 
                 if(!viewModel.searchResults.isEmpty) {
                     List(viewModel.searchResults, id: \.self) { result in

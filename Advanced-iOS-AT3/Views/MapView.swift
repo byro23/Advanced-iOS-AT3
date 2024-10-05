@@ -95,5 +95,9 @@ struct MapView: View {
 }
 
 #Preview {
+    let persistenceController = PersistenceController.preview
+    let context = persistenceController.container.viewContext
+    
     MapView()
+        .environment(\.managedObjectContext, persistenceController.container.viewContext)
 }

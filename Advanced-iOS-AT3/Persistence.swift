@@ -11,6 +11,12 @@ struct PersistenceController {
     static let shared = PersistenceController()
 
     let container: NSPersistentContainer
+    
+    // Preview setup with in-memory context
+    static var preview: PersistenceController = {
+        let controller = PersistenceController(inMemory: true)
+        return controller
+    }()
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "MyDataModel")

@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import MapKit
 import Combine
 
@@ -11,8 +12,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     // Ultimo Area
     private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
-    
-    
+        
     @Published var searchableText: String = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     
@@ -86,8 +86,27 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                 )
                 
                 self.searchableText = ""
+                self.saveRecentSearch(queryText: suggestion.title, latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
             }
         }
+    }
+    
+    private func saveRecentSearch(queryText: String, latitude: Double, longitude: Double, context: NSManagedObjectContext) {
+        
+        let newSearchQuery = NSEntityDescription.insertNewObject(forEntityName: "SearchQuery", into: context)
+            
+        newSearchQuery.setValue(queryText, forKey: "queryText")
+        newSearchQuery.setValue(Date(), forKey: "date")
+        newSearchQuery.setValue(latitude, forKey: "latitude")
+        newSearchQuery.setValue(longitude, forKey: "longitude")
+        
+        do {
+            try context.save()
+            print("SearchQuery saved successfully!")
+        } catch {
+            print("Failed to save SearchQuery: \(error.localizedDescription)")
+        }
+        
     }
     
     // MARK: - MKLocalSearchCompleterDelegate methods

@@ -14,6 +14,7 @@ struct MapView: View {
     @StateObject private var locationManager = LocationManager()
     @FocusState private var isFocusedTextField: Bool
     @Environment(\.colorScheme) var colorScheme // Detect light or dark mode
+    @Environment(\.managedObjectContext) private var viewContext
     
     /*
     @State var region = MKCoordinateRegion(

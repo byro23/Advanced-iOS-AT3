@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C14976082CB107BC003FF0F2 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = C14976072CB107BC003FF0F2 /* GooglePlaces */; };
 		C1EF1C712CB0B76100DB09D6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C1EF1C702CB0B76100DB09D6 /* FirebaseAuth */; };
 		C1EF1C732CB0B76100DB09D6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C1EF1C722CB0B76100DB09D6 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C14976082CB107BC003FF0F2 /* GooglePlaces in Frameworks */,
 				C1EF1C712CB0B76100DB09D6 /* FirebaseAuth in Frameworks */,
 				C1EF1C732CB0B76100DB09D6 /* FirebaseFirestore in Frameworks */,
 			);
@@ -74,6 +76,7 @@
 			packageProductDependencies = (
 				C1EF1C702CB0B76100DB09D6 /* FirebaseAuth */,
 				C1EF1C722CB0B76100DB09D6 /* FirebaseFirestore */,
+				C14976072CB107BC003FF0F2 /* GooglePlaces */,
 			);
 			productName = "Advanced-iOS-AT3";
 			productReference = C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */;
@@ -105,6 +108,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C14976062CB107BC003FF0F2 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C161FE1A2C9A64D20020469D /* Products */;
@@ -342,6 +346,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C14976062CB107BC003FF0F2 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -353,6 +365,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C14976072CB107BC003FF0F2 /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C14976062CB107BC003FF0F2 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
+		};
 		C1EF1C702CB0B76100DB09D6 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C1EF1C6F2CB0B76100DB09D6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

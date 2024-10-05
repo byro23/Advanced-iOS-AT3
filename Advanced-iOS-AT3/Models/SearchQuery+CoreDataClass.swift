@@ -15,12 +15,14 @@ public class SearchQuery: NSManagedObject {
 }
 
 extension SearchQuery {
-    static func mock(context: NSManagedObjectContext) -> SearchQuery {
+    static func mock(context: NSManagedObjectContext) -> [SearchQuery] {
         let searchQuery = SearchQuery(context: context) // Create a new SearchQuery in the provided context
         searchQuery.queryText = "Mock Query"            // Set mock data for the query text
         searchQuery.date = Date()                       // Set the current date as a mock date
         searchQuery.latitude = -33.8688                 // Mock latitude (Sydney)
         searchQuery.longitude = 151.2093                // Mock longitude (Sydney)
-        return searchQuery
+        var searchQueries: [SearchQuery] = []
+        searchQueries.append(searchQuery)
+        return searchQueries
     }
 }

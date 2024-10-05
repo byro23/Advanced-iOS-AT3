@@ -74,7 +74,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         }
     }
     
-    func selectLocation(for suggestion: MKLocalSearchCompletion) {
+    func selectLocation(for suggestion: MKLocalSearchCompletion,  context: NSManagedObjectContext) {
         let searchRequest = MKLocalSearch.Request(completion: suggestion)
         let search = MKLocalSearch(request: searchRequest)
         

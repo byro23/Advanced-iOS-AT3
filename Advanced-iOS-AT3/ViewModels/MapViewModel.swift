@@ -2,10 +2,11 @@ import Foundation
 import CoreData
 import MapKit
 import Combine
+import GooglePlaces
 
 class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
-    @Published private(set) var annotationItems: [AnnotationItem] = []
+    @Published var annotations: [HikeAnnotation] = []
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
     )
@@ -16,6 +17,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var searchableText: String = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var recentSearches: [SearchQuery] = []
+    @Published var nearbyHikeResults: [GMSPlace] = []
     
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
@@ -61,12 +63,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             do {
                 let response = try await MKLocalSearch(request: request).start()
                 await MainActor.run {
-                    self.annotationItems = response.mapItems.map {
-                        AnnotationItem(
-                            latitude: $0.placemark.coordinate.latitude,
-                            longitude: $0.placemark.coordinate.longitude
-                        )
-                    }
+                    
                     self.region = response.boundingRegion
                 }
             } catch {
@@ -122,6 +119,59 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             print("Error fetching recent searches: \(error.localizedDescription)")
         }
     }
+    
+    @MainActor
+    func fetchNearbyHikes() async {
+        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 5000)
+        
+        // Specify the fields to return in the GMSPlace object for each place in the response.
+        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary].map {$0.rawValue}
+        
+        // Create the GMSPlaceSearchNearbyRequest, specifying the search area and GMSPlace fields to return.
+        var request = GMSPlaceSearchNearbyRequest(locationRestriction: circularLocationRestriction, placeProperties: placeProperties)
+        let includedTypes = ["park", "national_park"]
+        request.includedTypes = includedTypes
+        
+        let callback: GMSPlaceSearchNearbyResultCallback = { [weak self] results, error in
+          guard let self, error == nil else {
+            if let error {
+              print(error.localizedDescription)
+            }
+            return
+          }
+          guard let results = results as? [GMSPlace] else {
+            return
+          }
+          nearbyHikeResults = results
+        }
+
+        GMSPlacesClient.shared().searchNearby(with: request, callback: callback)
+        
+        annotateNearbyHikes()
+
+    }
+    
+    private func annotateNearbyHikes() {
+        // Clear existing annotations
+           annotations.removeAll()
+
+           // Iterate over the fetched nearby hike results and create annotations
+           for hikePlace in nearbyHikeResults {
+               // Extract name, coordinate, and summary
+               let name = hikePlace.name
+               let coordinate = hikePlace.coordinate
+               let summary = hikePlace.editorialSummary // If available
+               
+               // Create the annotation
+               let annotation = HikeAnnotation(title: name, coordinate: coordinate, summary: summary)
+               
+               // Add to annotations array
+               annotations.append(annotation)
+           }
+        
+        print(annotations[0].title)
+    }
+    
     
     // MARK: - MKLocalSearchCompleterDelegate methods
     

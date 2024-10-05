@@ -8,6 +8,9 @@
 import SwiftUI
 import MapKit
 
+import SwiftUI
+import MapKit
+
 struct MapView: View {
     
     @StateObject private var viewModel = MapViewModel()
@@ -16,13 +19,9 @@ struct MapView: View {
     @Environment(\.colorScheme) var colorScheme // Detect light or dark mode
     @Environment(\.managedObjectContext) private var viewContext
     @State private var showRecentSearches = false // State variable to control the popover
+    @StateObject private var debouncer = Debouncer()
     
-    /*
-    @State var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: -33.87978316775921, longitude: 151.19853677853445), // Default to Sydney
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-    ) */
-    
+
     
     var body: some View {
         
@@ -62,13 +61,12 @@ struct MapView: View {
                                 .padding(.bottom, 8)
                         }
                         .popover(isPresented: $showRecentSearches) {
-                            
+                            // Add recent searches view here if needed
                         }
                         
                         Spacer()
                     }
                 }
-                
                 
                 if(!viewModel.searchResults.isEmpty) {
                     List(viewModel.searchResults, id: \.self) { result in
@@ -97,18 +95,43 @@ struct MapView: View {
                 Spacer()
                 
                 if(!viewModel.isSearching) {
-                    Map(coordinateRegion: $viewModel.region)
-                        //.ignoresSafeArea()
+                    Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.annotations) { annotation in
+                        MapAnnotation(coordinate: annotation.coordinate) {
+                            VStack {
+                                Text(annotation.title ?? "Unknown")
+                                    .font(.caption)
+                                    .padding(5)
+                                    .background(Color.white.opacity(0.8))
+                                    .cornerRadius(8)
+                            }
+                        }
+                    }
+                    //.ignoresSafeArea()
                 }
-                
-                
             }
             .onAppear {
                 locationManager.checkAuthorizationStatus()
                 viewModel.region = locationManager.region
                 isFocusedTextField = true
+                Task {
+                    await viewModel.fetchNearbyHikes()
+                }
+            }
+            .onChange(of: viewModel.region) { newValue in
+                debouncer.debounce(delay: 5.0) { // Debounce with a 1-second delay
+                    Task {
+                        print("Calling api \n")
+                        await viewModel.fetchNearbyHikes()
+                    }
+                }
             }
         }
+    }
+}
+
+extension MKCoordinateRegion: Equatable {
+    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
+        lhs.center.latitude == rhs.center.latitude && lhs.center.longitude == rhs.center.longitude
     }
 }
 

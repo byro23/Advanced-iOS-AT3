@@ -98,16 +98,23 @@ struct MapView: View {
                     Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.annotations) { annotation in
                         MapAnnotation(coordinate: annotation.coordinate) {
                             VStack {
-                                
-                                Image(systemName: "figure.walk.diamond.fill")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundStyle(.orange)
-                                Text(annotation.title ?? "Unknown")
-                                    .font(.caption)
-                                    .padding(5)
-                                    .background(Color.white.opacity(0.8))
-                                    .cornerRadius(8)
+                                if(viewModel.region.span.latitudeDelta > 0.5 || viewModel.region.span.longitudeDelta > 0.5) {
+                                    Image(systemName: "circle.fill")
+                                        .resizable()
+                                        .frame(width: 8, height: 8)
+                                        .foregroundStyle(.orange)
+                                }
+                                else {
+                                    Image(systemName: "figure.walk.diamond.fill")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundStyle(.orange)
+                                    Text(annotation.title ?? "Unknown")
+                                        .font(.caption)
+                                        .padding(5)
+                                        .background(Color.white.opacity(0.8))
+                                        .cornerRadius(8)
+                                }
                             }
                         }
                     }

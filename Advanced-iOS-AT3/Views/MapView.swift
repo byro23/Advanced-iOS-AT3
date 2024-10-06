@@ -98,6 +98,7 @@ struct MapView: View {
                     Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.annotations) { annotation in
                         MapAnnotation(coordinate: annotation.coordinate) {
                             VStack {
+                                
                                 Image(systemName: "figure.walk.diamond.fill")
                                     .resizable()
                                     .frame(width: 50, height: 50)
@@ -116,10 +117,6 @@ struct MapView: View {
             .onAppear {
                 locationManager.checkAuthorizationStatus()
                 viewModel.region = locationManager.region
-                isFocusedTextField = true
-                Task {
-                    viewModel.fetchNearbyHikesByTextSearch()
-                }
             }
             .onChange(of: viewModel.region) { newValue in
                 debouncer.debounce(delay: 1.0) { // Debounce with a 1-second delay

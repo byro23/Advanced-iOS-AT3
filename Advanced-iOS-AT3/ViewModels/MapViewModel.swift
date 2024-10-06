@@ -6,7 +6,7 @@ import GooglePlaces
 
 class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
-    @Published var annotations: [HikeAnnotation] = []
+    @Published var annotations: [Hike] = []
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
     )
@@ -118,7 +118,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         let textQuery = "Hiking Trails"
         
         // Specify the fields to return in the GMSPlace object for each place in the response.
-        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary].map {$0.rawValue}
+        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary, GMSPlaceProperty.rating, GMSPlaceProperty.formattedAddress].map {$0.rawValue}
         
         // Create the GMSPlaceSearchNearbyRequest, specifying the search area and GMSPlace fields to return.
         var request = GMSPlaceSearchNearbyRequest(locationRestriction: circularLocationRestriction, placeProperties: placeProperties)
@@ -145,7 +145,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     }
     
     @MainActor
-    func fetchNearbyHikesByTextSearch() {
+    func fetchNearbyHikesByTextSearch() { // Fetches the places (importantly the coordinates) through the Google Places API
         let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 10000)
         
         print("Region center: \(region.center)")
@@ -187,12 +187,15 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let name = hikePlace.name
                let coordinate = hikePlace.coordinate
                let summary = hikePlace.editorialSummary // If available
+               let address = hikePlace.formattedAddress
+               let rating = hikePlace.rating
+               let imageURL = hikePlace.iconImageURL
                
                // Create the annotation
-               let annotation = HikeAnnotation(title: name, coordinate: coordinate, summary: summary)
+               let hike = Hike(summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate)
                
                // Add to annotations array
-               annotations.append(annotation)
+               annotations.append(hike)
            }
         
         if annotations.count > 0 {

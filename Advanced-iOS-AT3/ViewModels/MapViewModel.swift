@@ -75,6 +75,8 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 )
                 
+                // print("Searched coordinates: \(coordinate.latitude) \(coordinate.longitude)")
+                
                 self.searchableText = ""
                 self.saveRecentSearch(queryText: suggestion.title, latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
             }
@@ -232,7 +234,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         }
         
         if annotations.count > 0 {
-            print(annotations[0].title)
+            print("Current annotations \(annotations.count)")
         }
     }
     

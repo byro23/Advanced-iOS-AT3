@@ -111,11 +111,6 @@ struct MapView: View {
                             }
                         }
                     }
-                    .onAppear {
-                        locationManager.checkAuthorizationStatus()
-                        viewModel.region = locationManager.region
-                        viewModel.fetchNearbyHikesByTextSearch()
-                    }
                     //.ignoresSafeArea()
                 }
             }
@@ -126,6 +121,11 @@ struct MapView: View {
                 viewModel.fetchNearbyHikesByTextSearch()
                     
             }
+        }
+        .onAppear {
+            locationManager.checkAuthorizationStatus()
+            viewModel.region = locationManager.region
+            viewModel.fetchNearbyHikesByTextSearch()
         }
     }
 }

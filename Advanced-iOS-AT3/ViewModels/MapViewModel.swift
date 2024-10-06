@@ -153,7 +153,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         var searchRadius: Double
 
         if region.span.longitudeDelta > 0.5 || region.span.latitudeDelta > 0.5 {
-            searchRadius = 20000 // 20 km for zoomed-out view (country-level)
+            searchRadius = 50000 // 50 km for zoomed-out view (country-level)
         } else if region.span.longitudeDelta > 0.1 || region.span.latitudeDelta > 0.1 {
             searchRadius = 10000 // 10 km for region-level view
         } else if region.span.longitudeDelta > 0.05 || region.span.latitudeDelta > 0.05 {
@@ -199,7 +199,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     private func annotateNearbyHikes() {
         
-        let annotationLimit = 100
+        let annotationLimit = 250
         
         let visibleRegion = region
         

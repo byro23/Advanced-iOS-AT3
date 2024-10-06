@@ -98,16 +98,28 @@ struct MapView: View {
                     Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.annotations) { annotation in
                         MapAnnotation(coordinate: annotation.coordinate) {
                             VStack {
+                                
+                                let size: CGFloat = {
+                                    let delta = viewModel.region.span.latitudeDelta
+                                    if delta > 1.0 {
+                                        return 8 // Small size for zoomed-out view
+                                    } else if delta > 0.1 {
+                                        return 20 // Medium size for mid-zoom view
+                                    } else {
+                                        return 30 // Larger size for zoomed-in view
+                                    }
+                                }()
+                                
                                 if(viewModel.region.span.latitudeDelta > 0.5 || viewModel.region.span.longitudeDelta > 0.5) {
                                     Image(systemName: "circle.fill")
                                         .resizable()
-                                        .frame(width: 8, height: 8)
+                                        .frame(width: size, height: size)
                                         .foregroundStyle(.orange)
                                 }
                                 else {
                                     Image(systemName: "figure.walk.diamond.fill")
                                         .resizable()
-                                        .frame(width: 30, height: 30)
+                                        .frame(width: size, height: size)
                                         .foregroundStyle(.orange)
                                     Text(annotation.title ?? "Unknown")
                                         .font(.caption)

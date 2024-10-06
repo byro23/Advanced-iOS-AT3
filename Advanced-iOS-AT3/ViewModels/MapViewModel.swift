@@ -184,7 +184,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
         let visibleRegion = region
         
-      /*  // Helper function to check if a coordinate is within the visible region
+      // Helper function to check if a coordinate is within the visible region
        func isCoordinateVisible(coordinate: CLLocationCoordinate2D, region: MKCoordinateRegion) -> Bool {
            let minLat = region.center.latitude - region.span.latitudeDelta / 2
            let maxLat = region.center.latitude + region.span.latitudeDelta / 2
@@ -202,7 +202,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                 return false // Remove from annotations array
             }
             return true // Keep annotation in the array
-        } */
+        } 
         
            // Iterate over the fetched nearby hike results and create annotations
            for hikePlace in nearbyHikeResults {

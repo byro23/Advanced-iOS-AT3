@@ -18,6 +18,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var recentSearches: [SearchQuery] = []
     @Published var nearbyHikeResults: [GMSPlace] = []
+    var fetchingSuggestions: Bool = false
     
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
@@ -35,41 +36,31 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             .sink { [weak self] query in
                 guard let self = self else { return }
                 
+                fetchingSuggestions = true
+                
                 // Update the queryFragment of the searchCompleter
                 if query.isEmpty {
                     self.searchResults = [] // Clear results when query is empty
                 } else {
-                    self.searchCompleter.queryFragment = query
-                }
-            }
-        
-        // Set searchCompleter properties
-        searchCompleter.resultTypes = .address
-        searchCompleter.delegate = self
-        
-        let australiaRegion = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: -25.2744, longitude: 133.7751),
-            span: MKCoordinateSpan(latitudeDelta: 35.0, longitudeDelta: 40.0)
-        )
-        
-        searchCompleter.region = australiaRegion
-    }
-    
-    // Method to get place from selected address and update the map region
-    func getPlace(from address: MKLocalSearchCompletion) {
-        let request = MKLocalSearch.Request(completion: address)
-        
-        Task {
-            do {
-                let response = try await MKLocalSearch(request: request).start()
-                await MainActor.run {
+                    fetchingSuggestions = true
+                    // Set searchCompleter properties
+                    searchCompleter.resultTypes = .address
+                    searchCompleter.delegate = self
                     
-                    self.region = response.boundingRegion
+                    let australiaRegion = MKCoordinateRegion(
+                        center: CLLocationCoordinate2D(latitude: -25.2744, longitude: 133.7751),
+                        span: MKCoordinateSpan(latitudeDelta: 35.0, longitudeDelta: 40.0)
+                    )
+                    
+                    searchCompleter.region = australiaRegion
+                    
+                    self.searchCompleter.queryFragment = query
+                    
+                    fetchingSuggestions = false
                 }
-            } catch {
-                print("Error occurred during search: \(error.localizedDescription)")
             }
-        }
+        
+        
     }
     
     func selectLocation(for suggestion: MKLocalSearchCompletion,  context: NSManagedObjectContext) {
@@ -155,11 +146,11 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     @MainActor
     func fetchNearbyHikesByTextSearch() {
-        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 5000)
+        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 10000)
         
         print("Region center: \(region.center)")
         
-        let textQuery = "Hiking Trails"
+        let textQuery = "hiking trail"
         
         // Specify the fields to return in the GMSPlace object for each place in the response.
         let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary].map {$0.rawValue}

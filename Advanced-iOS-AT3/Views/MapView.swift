@@ -81,7 +81,7 @@ struct MapView: View {
                     }
                     .listStyle(.plain)
                 }
-                else if(viewModel.searchResults.isEmpty && !viewModel.searchableText.isEmpty && viewModel.searchableText.count > 3) {
+                else if(viewModel.searchResults.isEmpty && !viewModel.searchableText.isEmpty && viewModel.searchableText.count > 3 && viewModel.fetchingSuggestions == false) {
                     Text("No locations in Australia by that name.")
                     
                     Button {
@@ -98,6 +98,10 @@ struct MapView: View {
                     Map(coordinateRegion: $viewModel.region, annotationItems: viewModel.annotations) { annotation in
                         MapAnnotation(coordinate: annotation.coordinate) {
                             VStack {
+                                Image(systemName: "figure.walk.diamond.fill")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundStyle(.orange)
                                 Text(annotation.title ?? "Unknown")
                                     .font(.caption)
                                     .padding(5)

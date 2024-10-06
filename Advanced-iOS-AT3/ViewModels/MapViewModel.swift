@@ -8,7 +8,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     @Published var annotations: [Hike] = []
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
-        center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 1, longitudeDelta: 1)
+        center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
     )
     
     // Ultimo Area
@@ -19,6 +19,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     @Published var recentSearches: [SearchQuery] = []
     @Published var nearbyHikeResults: [GMSPlace] = []
     var fetchingSuggestions: Bool = false
+    var isZoomedIn: Bool = true
     
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
@@ -178,9 +179,31 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     }
     
     private func annotateNearbyHikes() {
-        // Clear existing annotations
-           annotations.removeAll()
-
+        
+        let annotationLimit = 100
+        
+        let visibleRegion = region
+        
+      /*  // Helper function to check if a coordinate is within the visible region
+       func isCoordinateVisible(coordinate: CLLocationCoordinate2D, region: MKCoordinateRegion) -> Bool {
+           let minLat = region.center.latitude - region.span.latitudeDelta / 2
+           let maxLat = region.center.latitude + region.span.latitudeDelta / 2
+           let minLon = region.center.longitude - region.span.longitudeDelta / 2
+           let maxLon = region.center.longitude + region.span.longitudeDelta / 2
+           
+           return coordinate.latitude >= minLat && coordinate.latitude <= maxLat &&
+                  coordinate.longitude >= minLon && coordinate.longitude <= maxLon
+       }
+        
+        // Remove annotations that are outside the visible region
+        annotations = annotations.filter { annotation in
+            if !isCoordinateVisible(coordinate: annotation.coordinate, region: visibleRegion) {
+                // Annotation is outside the visible region
+                return false // Remove from annotations array
+            }
+            return true // Keep annotation in the array
+        } */
+        
            // Iterate over the fetched nearby hike results and create annotations
            for hikePlace in nearbyHikeResults {
                // Extract name, coordinate, and summary
@@ -194,9 +217,19 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                // Create the annotation
                let hike = Hike(summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate)
                
-               // Add to annotations array
-               annotations.append(hike)
+               
+               if !annotations.contains(where: { annotation in
+                   return annotation.title == hike.title
+               }) {
+                   annotations.append(hike)
+               }
            }
+        
+        // Optionally limit the number of annotations
+        if annotations.count > annotationLimit {
+            let excessAnnotations = annotations.count - annotationLimit
+            annotations.removeFirst(excessAnnotations) // Remove oldest annotations
+        }
         
         if annotations.count > 0 {
             print(annotations[0].title)

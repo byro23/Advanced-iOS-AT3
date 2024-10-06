@@ -111,19 +111,20 @@ struct MapView: View {
                             }
                         }
                     }
+                    .onAppear {
+                        locationManager.checkAuthorizationStatus()
+                        viewModel.region = locationManager.region
+                        viewModel.fetchNearbyHikesByTextSearch()
+                    }
                     //.ignoresSafeArea()
                 }
             }
-            .onAppear {
-                locationManager.checkAuthorizationStatus()
-                viewModel.region = locationManager.region
-            }
-            .onChange(of: viewModel.region) { newValue in
-                debouncer.debounce(delay: 1.0) { // Debounce with a 1-second delay
-                    print("Calling api \n")
-                    viewModel.fetchNearbyHikesByTextSearch()
-                        
-                }
+        }
+        .onChange(of: viewModel.region) { newValue in
+            debouncer.debounce(delay: 0.5) { // Debounce with a 1-second delay
+                print("Calling api \n")
+                viewModel.fetchNearbyHikesByTextSearch()
+                    
             }
         }
     }

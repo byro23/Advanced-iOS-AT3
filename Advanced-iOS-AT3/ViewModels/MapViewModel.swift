@@ -149,7 +149,24 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     @MainActor
     func fetchNearbyHikesByTextSearch() { // Fetches the places (importantly the coordinates) through the Google Places API
-        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 10000)
+        
+        var searchRadius: Double
+
+        if region.span.longitudeDelta > 0.5 || region.span.latitudeDelta > 0.5 {
+            searchRadius = 20000 // 20 km for zoomed-out view (country-level)
+        } else if region.span.longitudeDelta > 0.1 || region.span.latitudeDelta > 0.1 {
+            searchRadius = 10000 // 10 km for region-level view
+        } else if region.span.longitudeDelta > 0.05 || region.span.latitudeDelta > 0.05 {
+            searchRadius = 5000 // 5 km for city-level view
+        } else if region.span.longitudeDelta > 0.01 || region.span.latitudeDelta > 0.01 {
+            searchRadius = 1000 // 1 km for medium zoom
+        } else {
+            searchRadius = 500 // 500 meters for highly zoomed-in view
+        }
+        
+        var circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, searchRadius)
+        
+        //let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 10000)
         
         print("Region center: \(region.center)")
         

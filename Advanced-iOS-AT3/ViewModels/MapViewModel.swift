@@ -121,8 +121,10 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     }
     
     @MainActor
-    func fetchNearbyHikes() async {
+    func fetchNearbyHikes() {
         let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 5000)
+        
+        let textQuery = "Hiking Trails"
         
         // Specify the fields to return in the GMSPlace object for each place in the response.
         let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary].map {$0.rawValue}
@@ -151,6 +153,39 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
 
     }
     
+    @MainActor
+    func fetchNearbyHikesByTextSearch() {
+        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 5000)
+        
+        print("Region center: \(region.center)")
+        
+        let textQuery = "Hiking Trails"
+        
+        // Specify the fields to return in the GMSPlace object for each place in the response.
+        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary].map {$0.rawValue}
+        
+        let request = GMSPlaceSearchByTextRequest(textQuery: textQuery, placeProperties: placeProperties)
+        
+        request.locationBias = circularLocationRestriction
+        
+        let callback: GMSPlaceSearchByTextResultCallback = { [weak self] results, error in
+          guard let self, error == nil else {
+            if let error {
+              print(error.localizedDescription)
+            }
+            return
+          }
+          guard let results = results as? [GMSPlace] else {
+            return
+          }
+            nearbyHikeResults = results
+        }
+
+        GMSPlacesClient.shared().searchByText(with: request, callback: callback)
+        
+        annotateNearbyHikes()
+    }
+    
     private func annotateNearbyHikes() {
         // Clear existing annotations
            annotations.removeAll()
@@ -169,7 +204,9 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                annotations.append(annotation)
            }
         
-        print(annotations[0].title)
+        if annotations.count > 0 {
+            print(annotations[0].title)
+        }
     }
     
     

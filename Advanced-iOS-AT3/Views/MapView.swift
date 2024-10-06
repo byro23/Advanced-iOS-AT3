@@ -114,15 +114,14 @@ struct MapView: View {
                 viewModel.region = locationManager.region
                 isFocusedTextField = true
                 Task {
-                    await viewModel.fetchNearbyHikes()
+                    viewModel.fetchNearbyHikesByTextSearch()
                 }
             }
             .onChange(of: viewModel.region) { newValue in
-                debouncer.debounce(delay: 5.0) { // Debounce with a 1-second delay
-                    Task {
-                        print("Calling api \n")
-                        await viewModel.fetchNearbyHikes()
-                    }
+                debouncer.debounce(delay: 1.0) { // Debounce with a 1-second delay
+                    print("Calling api \n")
+                    viewModel.fetchNearbyHikesByTextSearch()
+                        
                 }
             }
         }

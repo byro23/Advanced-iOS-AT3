@@ -42,7 +42,7 @@ struct Advanced_iOS_AT3App: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                UserView()
+                HikeDetailsView(hike: Hike.mock_hike)
                     .preferredColorScheme(colorScheme(from: appearanceMode))
             }
             .environment(\.managedObjectContext, persistenceController.container.viewContext) // Inject Core Data context

@@ -19,12 +19,43 @@ struct HikeDetailsView: View {
             Text(hike.title ?? "Unknown place.")
                 .font(.title)
                 .fontWeight(.bold)
+                .padding()
             Divider()
             
+            HStack {
+                Text("Address: ")
+                    .fontWeight(.bold)
+                
+                Text(hike.address ?? "Unknown address")
+            }
+            .padding()
+            
+            HStack {
+                
+                Text("Latitude: ")
+                    .fontWeight(.bold)
+                
+                Text("\(hike.coordinate.latitude)")
+                
+                Text("Longitude: ")
+                    .fontWeight(.bold)
+                
+                Text("\(hike.coordinate.longitude)")
+            }
+            .padding()
+            
+            HStack {
+                Text("Rating")
+                    .fontWeight(.bold)
+                
+                Text("\(hike.rating)")
+            }
+            
             Text(hike.summary ?? "No summaries of this hike.")
-                .font(.headline)
+                .padding()
+            
+            Spacer()
         }
-        
         
     }
 }

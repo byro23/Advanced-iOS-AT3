@@ -20,9 +20,15 @@ struct HikeDetailsView: View {
     var body: some View {
         VStack{
             
-            AsyncImage(url: hike.imageURL)
-                .scaledToFit()
-                .frame(width: 200, height: 200)
+            AsyncImage(url: hike.imageURL) { image in
+                image
+                    .resizable()  // Make the image resizable
+                    .scaledToFit() // Maintain aspect ratio within the frame
+            } placeholder: {
+                ProgressView()  // Show a placeholder while loading
+            }
+            .frame(width: 150, height: 150)
+            .padding()
              
             Text(hike.title ?? "Unknown place.")
                 .font(.title)

@@ -208,11 +208,12 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let address = hikePlace.formattedAddress
                let rating = hikePlace.rating
                let imageURL = hikePlace.iconImageURL
+               let photoReferences = hikePlace.photos
                
 
                
                // Create the annotation
-               let hike = Hike(summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate)
+               let hike = Hike(summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
                
                
                if !annotations.contains(where: { annotation in

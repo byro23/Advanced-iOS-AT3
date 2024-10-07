@@ -9,8 +9,14 @@ import SwiftUI
 
 struct HikeDetailsView: View {
     @Environment(\.managedObjectContext) var viewContext
-    @StateObject var viewModel: HikeDetailsViewModel = HikeDetailsViewModel()
+    @StateObject var viewModel: HikeDetailsViewModel
     @State var hike: Hike
+    
+    init(hike: Hike) {
+        self.hike = hike
+        _viewModel = StateObject(wrappedValue: HikeDetailsViewModel(hike: hike))
+    }
+    
     var body: some View {
         VStack{
             
@@ -55,6 +61,8 @@ struct HikeDetailsView: View {
             
             Text(hike.summary ?? "No summaries of this hike.")
                 .padding()
+            
+            
             
             Spacer()
         }

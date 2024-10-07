@@ -7,6 +7,7 @@
 
 import Foundation
 import MapKit
+import GooglePlaces
 
 import MapKit
 
@@ -18,21 +19,23 @@ class Hike: NSObject, MKAnnotation, Identifiable {
     let imageURL: URL?
     let title: String?
     let coordinate: CLLocationCoordinate2D
+    let photoReferences: [GMSPlacePhotoMetadata]?
     var isFavourite: Bool = false
     
-    init(summary: String?, address: String?, rating: Float, imageURL: URL?, title: String?, coordinate: CLLocationCoordinate2D) {
+    init(summary: String?, address: String?, rating: Float, imageURL: URL?, title: String?, coordinate: CLLocationCoordinate2D, photoReferences: [GMSPlacePhotoMetadata]?) {
         self.summary = summary
         self.address = address
         self.rating = rating
         self.imageURL = imageURL
         self.title = title
         self.coordinate = coordinate
+        self.photoReferences = photoReferences
     }
 }
 
 extension Hike {
     static let coordinates = CLLocationCoordinate2D(latitude: 55, longitude: 55)
-    static let mock_hike = Hike(summary: "The best walk across the beaches of Sydney", address: "Epic Beach Walk Road", rating: 4.5, imageURL: nil, title: "Bondi Beach Walk", coordinate: coordinates)
+    static let mock_hike = Hike(summary: "The best walk across the beaches of Sydney", address: "Epic Beach Walk Road", rating: 4.5, imageURL: nil, title: "Bondi Beach Walk", coordinate: coordinates, photoReferences: nil)
 }
 
 

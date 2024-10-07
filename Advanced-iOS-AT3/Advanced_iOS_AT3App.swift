@@ -41,9 +41,17 @@ struct Advanced_iOS_AT3App: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                HikeDetailsView(hike: Hike.mock_hike)
+            NavigationStack(path: $navigationController.path) {
+                UserView()
                     .preferredColorScheme(colorScheme(from: appearanceMode))
+                    .navigationDestination(for: NavigationController.AppScreen.self) { screen in
+                     
+                        switch screen {
+                        case .HikeDetails(let hike):
+                            HikeDetailsView(hike: hike)
+                        }
+                        
+                    }
             }
             .environment(\.managedObjectContext, persistenceController.container.viewContext) // Inject Core Data context
             .environmentObject(navigationController)

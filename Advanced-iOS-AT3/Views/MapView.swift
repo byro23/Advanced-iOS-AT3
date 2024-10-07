@@ -18,6 +18,7 @@ struct MapView: View {
     @FocusState private var isFocusedTextField: Bool
     @Environment(\.colorScheme) var colorScheme // Detect light or dark mode
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var navigationController: NavigationController
     @State private var showRecentSearches = false // State variable to control the popover
     @StateObject private var debouncer = Debouncer()
     
@@ -121,6 +122,9 @@ struct MapView: View {
                                         .resizable()
                                         .frame(width: size, height: size)
                                         .foregroundStyle(.orange)
+                                        .onTapGesture {
+                                            navigationController.path.append(NavigationController.AppScreen.HikeDetails(hike: annotation))
+                                        }
                                     Text(annotation.title ?? "Unknown")
                                         .font(.caption)
                                         .padding(5)

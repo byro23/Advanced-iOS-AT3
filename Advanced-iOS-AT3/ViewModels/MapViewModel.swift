@@ -114,38 +114,6 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         }
     }
     
-    @MainActor
-    func fetchNearbyHikes() {
-        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 5000)
-        
-        let textQuery = "Hiking Trails"
-        
-        // Specify the fields to return in the GMSPlace object for each place in the response.
-        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary, GMSPlaceProperty.rating, GMSPlaceProperty.formattedAddress].map {$0.rawValue}
-        
-        // Create the GMSPlaceSearchNearbyRequest, specifying the search area and GMSPlace fields to return.
-        var request = GMSPlaceSearchNearbyRequest(locationRestriction: circularLocationRestriction, placeProperties: placeProperties)
-        let includedTypes = ["park", "national_park"]
-        request.includedTypes = includedTypes
-        
-        let callback: GMSPlaceSearchNearbyResultCallback = { [weak self] results, error in
-          guard let self, error == nil else {
-            if let error {
-              print(error.localizedDescription)
-            }
-            return
-          }
-          guard let results = results as? [GMSPlace] else {
-            return
-          }
-          nearbyHikeResults = results
-        }
-
-        GMSPlacesClient.shared().searchNearby(with: request, callback: callback)
-        
-        annotateNearbyHikes()
-
-    }
     
     @MainActor
     func fetchNearbyHikesByTextSearch() { // Fetches the places (importantly the coordinates) through the Google Places API
@@ -170,10 +138,18 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
         print("Region center: \(region.center)")
         
-        let textQuery = "hiking trail"
+        let textQuery = "Hiking trail"
         
         // Specify the fields to return in the GMSPlace object for each place in the response.
-        let placeProperties = [GMSPlaceProperty.name, GMSPlaceProperty.coordinate, GMSPlaceProperty.editorialSummary].map {$0.rawValue}
+        let placeProperties = [
+            GMSPlaceProperty.name,
+            GMSPlaceProperty.coordinate,
+            GMSPlaceProperty.editorialSummary,
+            GMSPlaceProperty.formattedAddress,
+            GMSPlaceProperty.rating,
+            GMSPlaceProperty.iconImageURL,
+            GMSPlaceProperty.photos
+        ].map {$0.rawValue}
         
         let request = GMSPlaceSearchByTextRequest(textQuery: textQuery, placeProperties: placeProperties)
         
@@ -232,6 +208,8 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let address = hikePlace.formattedAddress
                let rating = hikePlace.rating
                let imageURL = hikePlace.iconImageURL
+               
+
                
                // Create the annotation
                let hike = Hike(summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate)

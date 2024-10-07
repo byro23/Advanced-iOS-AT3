@@ -10,8 +10,9 @@ import SwiftUI
 
 class NavigationController: ObservableObject {
     
-    enum AppScreen {
-        
+    enum AppScreen: Hashable {
+        // case Home
+        case HikeDetails(hike: Hike)
     }
     
     enum Tab {

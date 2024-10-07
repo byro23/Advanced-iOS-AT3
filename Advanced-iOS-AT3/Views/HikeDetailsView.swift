@@ -14,8 +14,10 @@ struct HikeDetailsView: View {
     var body: some View {
         VStack{
             
-            
-            
+            AsyncImage(url: hike.imageURL)
+                .scaledToFit()
+                .frame(width: 200, height: 200)
+             
             Text(hike.title ?? "Unknown place.")
                 .font(.title)
                 .fontWeight(.bold)

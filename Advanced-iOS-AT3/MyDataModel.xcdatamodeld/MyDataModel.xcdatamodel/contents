@@ -4,6 +4,7 @@
         <attribute name="address" optional="YES" attributeType="String"/>
         <attribute name="addTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="placeId" optional="YES" attributeType="String"/>
+        <attribute name="placeName" optional="YES" attributeType="String"/>
     </entity>
     <entity name="SearchQuery" representedClassName="SearchQuery" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

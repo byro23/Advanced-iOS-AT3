@@ -17,9 +17,7 @@ class NavigationController: ObservableObject {
     
     enum Tab {
         case map
-        case pay
-        case transactions
-        case categories
+        case favourites
     }
     
     @Published var path = NavigationPath()

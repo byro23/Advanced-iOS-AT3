@@ -43,6 +43,7 @@ class HikeDetailsViewModel: ObservableObject {
             if results.isEmpty {
                 let newFavouriteHike = FavouriteHikes(context: context)
                 newFavouriteHike.placeId = hike.placeId
+                newFavouriteHike.placeName = hike.title
                 newFavouriteHike.address = hike.address
                 newFavouriteHike.addTime = Date()
                 

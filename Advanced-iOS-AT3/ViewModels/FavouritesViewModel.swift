@@ -10,5 +10,4 @@ import Swift
 
 class FavouritesViewModel: ObservableObject {
     
-    var favouriteHikes: FetchedResults
 }

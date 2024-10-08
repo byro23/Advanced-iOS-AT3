@@ -17,6 +17,11 @@ struct UserView: View {
                     Label("Map", systemImage: "map.circle.fill")
                 }
                 .tag(NavigationController.Tab.map)
+            FavouritesView()
+                .tabItem {
+                    Label("Favourites", systemImage: "heart.fill")
+                }
+                .tag(NavigationController.Tab.favourites)
         }
     }
 }

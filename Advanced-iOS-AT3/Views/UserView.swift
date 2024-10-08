@@ -22,6 +22,11 @@ struct UserView: View {
                     Label("Favourites", systemImage: "heart.fill")
                 }
                 .tag(NavigationController.Tab.favourites)
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
+                .tag(NavigationController.Tab.settings)
         }
     }
 }

@@ -20,22 +20,25 @@ struct SettingsView: View {
 
     
     var body: some View {
-        VStack(alignment: .leading) {
-            /*Text("Settings")
-                .font(.title)
-                .fontWeight(.semibold)
-                .padding() */
-            
-            Form {
-                Section(header: Text("Appearance")) {
-                    Picker("Theme", selection: $appearanceMode) {
-                        ForEach(AppearanceMode.allCases) { mode in
-                            Text(mode.rawValue.capitalized)
+        NavigationView {
+            VStack(alignment: .leading) {
+                /*Text("Settings")
+                    .font(.title)
+                    .fontWeight(.semibold)
+                    .padding() */
+                
+                Form {
+                    Section(header: Text("Appearance")) {
+                        Picker("Theme", selection: $appearanceMode) {
+                            ForEach(AppearanceMode.allCases) { mode in
+                                Text(mode.rawValue.capitalized)
+                            }
                         }
+                        .pickerStyle(SegmentedPickerStyle())
                     }
-                    .pickerStyle(SegmentedPickerStyle())
                 }
             }
+            .navigationTitle("Settings")
         }
     }
 }

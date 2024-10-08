@@ -148,6 +148,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             GMSPlaceProperty.editorialSummary,
             GMSPlaceProperty.formattedAddress,
             GMSPlaceProperty.rating,
+            GMSPlaceProperty.userRatingsTotal,
             GMSPlaceProperty.iconImageURL,
             GMSPlaceProperty.photos
         ].map {$0.rawValue}
@@ -209,13 +210,14 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let summary = hikePlace.editorialSummary // If available
                let address = hikePlace.formattedAddress
                let rating = hikePlace.rating
+               let userRatingsTotal = hikePlace.userRatingsTotal
                let imageURL = hikePlace.iconImageURL
                let photoReferences = hikePlace.photos
                
 
                
                // Create the annotation
-               let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
+               let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, userRatingsTotal: Int(userRatingsTotal), imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
                
                
                if !annotations.contains(where: { annotation in

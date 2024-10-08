@@ -14,8 +14,8 @@
             filePath = "Advanced-iOS-AT3/ViewModels/HikeDetailsViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "addToFavourites(context:)"
             landmarkType = "7">
          </BreakpointContent>

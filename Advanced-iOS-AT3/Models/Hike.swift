@@ -17,17 +17,19 @@ class Hike: NSObject, MKAnnotation, Identifiable {
     let summary: String?
     let address: String?
     let rating: Float
+    let userRatingsTotal: Int
     let imageURL: URL?
     let title: String?
     let coordinate: CLLocationCoordinate2D
     let photoReferences: [GMSPlacePhotoMetadata]?
     var isFavourite: Bool = false
     
-    init(placeId: String?, summary: String?, address: String?, rating: Float, imageURL: URL?, title: String?, coordinate: CLLocationCoordinate2D, photoReferences: [GMSPlacePhotoMetadata]?) {
+    init(placeId: String?, summary: String?, address: String?, rating: Float, userRatingsTotal: Int, imageURL: URL?, title: String?, coordinate: CLLocationCoordinate2D, photoReferences: [GMSPlacePhotoMetadata]?) {
         self.placeId = placeId
         self.summary = summary
         self.address = address
         self.rating = rating
+        self.userRatingsTotal = userRatingsTotal
         self.imageURL = imageURL
         self.title = title
         self.coordinate = coordinate
@@ -37,7 +39,7 @@ class Hike: NSObject, MKAnnotation, Identifiable {
 
 extension Hike {
     static let coordinates = CLLocationCoordinate2D(latitude: 55, longitude: 55)
-    static let mock_hike = Hike(placeId: "123", summary: "The best walk across the beaches of Sydney", address: "Epic Beach Walk Road", rating: 4.5, imageURL: nil, title: "Bondi Beach Walk", coordinate: coordinates, photoReferences: nil)
+    static let mock_hike = Hike(placeId: "123", summary: "The best walk across the beaches of Sydney", address: "Epic Beach Walk Road", rating: 4.5, userRatingsTotal: 155, imageURL: nil, title: "Bondi Beach Walk", coordinate: coordinates, photoReferences: nil)
 }
 
 

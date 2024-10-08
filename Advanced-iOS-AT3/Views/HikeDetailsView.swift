@@ -26,8 +26,7 @@ struct HikeDetailsView: View {
             } placeholder: {
                 ProgressView()  // Show a placeholder while loading
             }
-            
-            .frame(width: 150, height: 150)
+            .frame(width: 100, height: 100)
             .padding()
             
             HStack {
@@ -37,7 +36,12 @@ struct HikeDetailsView: View {
                     .padding()
                 
                 Button {
-                    viewModel.addToFavourites(context: viewContext)
+                    if(viewModel.isFavourite) {
+                        viewModel.removeFromFavourite(context: viewContext)
+                    }
+                    else {
+                        viewModel.addToFavourites(context: viewContext)
+                    }
                     
                 } label: {
                     Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
@@ -75,7 +79,10 @@ struct HikeDetailsView: View {
                     .fontWeight(.bold)
                 
                 StarView(rating: Double(viewModel.hike.rating))
+                
             }
+            
+            Text("(Based on \(viewModel.hike.userRatingsTotal) user ratings)")
             
             Text(viewModel.hike.summary ?? "No summaries of this hike.")
                 .padding()
@@ -83,6 +90,9 @@ struct HikeDetailsView: View {
             
             
             Spacer()
+        }
+        .onAppear {
+            viewModel.checkIfFavourite(context: viewContext)
         }
         
     }

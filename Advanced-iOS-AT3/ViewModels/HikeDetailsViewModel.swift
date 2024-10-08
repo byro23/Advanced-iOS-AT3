@@ -14,11 +14,10 @@ class HikeDetailsViewModel: ObservableObject {
     
     @Published var hike: Hike
     @Published var hikeImage: UIImage?
-    @Published var isFavourite: Bool
+    @Published var isFavourite: Bool = false
     
     init(hike: Hike) {
         self.hike = hike
-        self.isFavourite = hike.isFavourite
         print(hike.rating)
     }
     
@@ -47,7 +46,9 @@ class HikeDetailsViewModel: ObservableObject {
                 newFavouriteHike.address = hike.address
                 newFavouriteHike.addTime = Date()
                 
+                // Update favourite flag
                 isFavourite = true
+                
                 try context.save()
                 print("Hike added to favourites")
             }
@@ -59,6 +60,51 @@ class HikeDetailsViewModel: ObservableObject {
             print("Error adding hike to favourites: \(error.localizedDescription)")
         }
         
+    }
+    
+    func removeFromFavourite(context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "placeId == %@", hike.placeId ?? "")
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            
+            if let favouriteHike = results.first {
+                // If the hike exists in favourites, remove it
+                context.delete(favouriteHike)
+                
+                // Update the local isFavourite flag
+                isFavourite = false
+                
+                // Save the context to persist the deletion
+                try context.save()
+                print("Hike removed from favourites")
+            } else {
+                print("Hike not found in favourites")
+            }
+            
+        } catch {
+            print("Error removing hike from favourites: \(error.localizedDescription)")
+        }
+    }
+
+    
+func checkIfFavourite(context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "placeId == %@", hike.placeId ?? "")
+        
+        do {
+            let results = try context.fetch(fetchRequest)
+            if(results.isEmpty) {
+                isFavourite = false
+            }
+            else {
+                isFavourite = true
+            }
+        }
+        catch {
+            print("Error: \(error.localizedDescription)")
+        }
     }
     
 }

@@ -31,12 +31,29 @@ struct FavouritesView: View {
                     List {
                         ForEach(favouriteHikes) { hike in
                             HikeRow(hike: hike)
+                                .onTapGesture {
+                                    
+                                }
                         }
+                        .onDelete(perform: deleteItem)
                     }
                 }
             }
             .navigationTitle("Favourites")
         }
         
+    }
+    
+    private func deleteItem(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { favouriteHikes[$0] }.forEach(viewContext.delete)
+
+            do {
+                try viewContext.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Failed to delete: \(nsError), \(nsError.userInfo)")
+            }
+        }
     }
 }

@@ -22,8 +22,6 @@ struct MapView: View {
     @State private var showRecentSearches = false // State variable to control the popover
     @StateObject private var debouncer = Debouncer()
     
-
-    
     var body: some View {
         
         ZStack {
@@ -115,13 +113,13 @@ struct MapView: View {
                                     Image(systemName: "circle.fill")
                                         .resizable()
                                         .frame(width: size, height: size)
-                                        .foregroundStyle(.orange)
+                                        .foregroundStyle(annotation.isFavourite ? .red : .orange)
                                 }
                                 else {
-                                    Image(systemName: "figure.walk.diamond.fill")
+                                    Image(systemName: annotation.isFavourite ? "heart.fill" : "figure.walk.diamond.fill")
                                         .resizable()
                                         .frame(width: size, height: size)
-                                        .foregroundStyle(.orange)
+                                        .foregroundStyle(annotation.isFavourite ? .red : .orange)
                                         .onTapGesture {
                                             navigationController.path.append(NavigationController.AppScreen.HikeDetails(hike: annotation))
                                         }

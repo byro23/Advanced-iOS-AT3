@@ -38,7 +38,9 @@ struct Advanced_iOS_AT3App: App {
     let persistenceController = PersistenceController.shared
     
     @StateObject private var navigationController = NavigationController()
-    @StateObject private var mapViewModel = MapViewModel()
+    
+    // Initialize MapViewModel with Core Data context
+    @StateObject private var mapViewModel = MapViewModel(context: PersistenceController.shared.container.viewContext)
     
     var body: some Scene {
         WindowGroup {

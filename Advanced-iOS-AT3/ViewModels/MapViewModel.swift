@@ -24,11 +24,14 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
     
+    private let context: NSManagedObjectContext
+    
     var isSearching: Bool {
         return !searchableText.isEmpty
     }
     
-    override init() {
+    init(context: NSManagedObjectContext) {
+        self.context = context
         super.init() // Initialize the superclass (NSObject)
         
         // Handle debounced input from the search field
@@ -214,20 +217,24 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let imageURL = hikePlace.iconImageURL
                let photoReferences = hikePlace.photos
                
-
+               let favouriteHikes = fetchFavoriteHikes()
                
                // Create the annotation
                let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, userRatingsTotal: Int(userRatingsTotal), imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
                
+               if favouriteHikes.contains(where: { $0.placeId == placeId }) {
+                   hike.isFavourite = true  // Mark as favorite
+               }
                
+               // Prevents an existing annotation from being re-added
                if !annotations.contains(where: { annotation in
-                   return annotation.title == hike.title
+                   return annotation.title == hike.title && annotation.isFavourite == hike.isFavourite
                }) {
                    annotations.append(hike)
                }
            }
         
-        // Optionally limit the number of annotations
+        // Limit the number of annotations for performance
         if annotations.count > annotationLimit {
             let excessAnnotations = annotations.count - annotationLimit
             annotations.removeFirst(excessAnnotations) // Remove oldest annotations
@@ -236,8 +243,18 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         if annotations.count > 0 {
             print("Current annotations \(annotations.count)")
         }
+        
     }
     
+    func fetchFavoriteHikes() -> [FavouriteHikes] {
+        let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
+        do {
+            return try context.fetch(fetchRequest)
+        } catch {
+            print("Error fetching favorite hikes: \(error.localizedDescription)")
+            return []
+        }
+    }
     
     // MARK: - MKLocalSearchCompleterDelegate methods
     

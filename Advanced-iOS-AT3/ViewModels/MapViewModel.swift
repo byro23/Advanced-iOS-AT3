@@ -142,6 +142,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
         // Specify the fields to return in the GMSPlace object for each place in the response.
         let placeProperties = [
+            GMSPlaceProperty.placeID,
             GMSPlaceProperty.name,
             GMSPlaceProperty.coordinate,
             GMSPlaceProperty.editorialSummary,
@@ -202,6 +203,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
            // Iterate over the fetched nearby hike results and create annotations
            for hikePlace in nearbyHikeResults {
                // Extract name, coordinate, and summary
+               let placeId = hikePlace.placeID
                let name = hikePlace.name
                let coordinate = hikePlace.coordinate
                let summary = hikePlace.editorialSummary // If available
@@ -213,7 +215,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
 
                
                // Create the annotation
-               let hike = Hike(summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
+               let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
                
                
                if !annotations.contains(where: { annotation in

@@ -10,37 +10,49 @@ import SwiftUI
 struct HikeDetailsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @StateObject var viewModel: HikeDetailsViewModel
-    @State var hike: Hike
+    // @State var hike: Hike
     
     init(hike: Hike) {
-        self.hike = hike
         _viewModel = StateObject(wrappedValue: HikeDetailsViewModel(hike: hike))
     }
     
     var body: some View {
         VStack{
             
-            AsyncImage(url: hike.imageURL) { image in
+            AsyncImage(url: viewModel.hike.imageURL) { image in
                 image
                     .resizable()  // Make the image resizable
                     .scaledToFit() // Maintain aspect ratio within the frame
             } placeholder: {
                 ProgressView()  // Show a placeholder while loading
             }
+            
             .frame(width: 150, height: 150)
             .padding()
-             
-            Text(hike.title ?? "Unknown place.")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding()
+            
+            HStack {
+                Text(viewModel.hike.title ?? "Unknown place.")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .padding()
+                
+                Button {
+                    viewModel.addToFavourites(context: viewContext)
+                    
+                } label: {
+                    Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
+                }
+                
+            }
+            
+            
             Divider()
             
             HStack {
                 Text("Address: ")
                     .fontWeight(.bold)
                 
-                Text(hike.address ?? "Unknown address")
+                Text(viewModel.hike.address ?? "Unknown address")
             }
             .padding()
             
@@ -49,12 +61,12 @@ struct HikeDetailsView: View {
                 Text("Latitude: ")
                     .fontWeight(.bold)
                 
-                Text("\(hike.coordinate.latitude)")
+                Text(String(format: "%.3f", viewModel.hike.coordinate.latitude))
                 
                 Text("Longitude: ")
                     .fontWeight(.bold)
                 
-                Text("\(hike.coordinate.longitude)")
+                Text(String(format: "%.3f", viewModel.hike.coordinate.longitude))
             }
             .padding()
             
@@ -62,10 +74,10 @@ struct HikeDetailsView: View {
                 Text("Rating")
                     .fontWeight(.bold)
                 
-                Text("\(hike.rating)")
+                StarView(rating: Double(viewModel.hike.rating))
             }
             
-            Text(hike.summary ?? "No summaries of this hike.")
+            Text(viewModel.hike.summary ?? "No summaries of this hike.")
                 .padding()
             
             

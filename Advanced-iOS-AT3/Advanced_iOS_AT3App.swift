@@ -38,6 +38,7 @@ struct Advanced_iOS_AT3App: App {
     let persistenceController = PersistenceController.shared
     
     @StateObject private var navigationController = NavigationController()
+    @StateObject private var mapViewModel = MapViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -55,6 +56,7 @@ struct Advanced_iOS_AT3App: App {
             }
             .environment(\.managedObjectContext, persistenceController.container.viewContext) // Inject Core Data context
             .environmentObject(navigationController)
+            .environmentObject(mapViewModel)
             
         }
     }

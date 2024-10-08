@@ -13,7 +13,7 @@ import MapKit
 
 struct MapView: View {
     
-    @StateObject private var viewModel = MapViewModel()
+    @EnvironmentObject private var viewModel: MapViewModel
     @StateObject private var locationManager = LocationManager()
     @FocusState private var isFocusedTextField: Bool
     @Environment(\.colorScheme) var colorScheme // Detect light or dark mode

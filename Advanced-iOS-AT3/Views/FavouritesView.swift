@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct FavouritesView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var navigationController: NavigationController
+    @EnvironmentObject var mapViewModel: MapViewModel
     @StateObject var viewModel = FavouritesViewModel()
     
     // Use @FetchRequest to fetch FavouriteHikes from Core Data
@@ -32,7 +35,8 @@ struct FavouritesView: View {
                         ForEach(favouriteHikes) { hike in
                             HikeRow(hike: hike)
                                 .onTapGesture {
-                                    
+                                    mapViewModel.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hike.latitude, longitude: hike.longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+                                    navigationController.currentTab = .map
                                 }
                         }
                         .onDelete(perform: deleteItem)

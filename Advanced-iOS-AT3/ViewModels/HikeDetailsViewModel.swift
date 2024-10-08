@@ -46,6 +46,8 @@ class HikeDetailsViewModel: ObservableObject {
                 newFavouriteHike.placeName = hike.title
                 newFavouriteHike.address = hike.address
                 newFavouriteHike.addTime = Date()
+                newFavouriteHike.latitude = hike.coordinate.latitude
+                newFavouriteHike.longitude = hike.coordinate.longitude
                 
                 // Update favourite flag
                 isFavourite = true

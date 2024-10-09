@@ -22,10 +22,10 @@ class HikeDetailsViewModel: ObservableObject {
     }
     
     func loadHikePhoto() {
-        guard let photoMetaData = hike.photoReferences?[0] else {
+        /*guard let photoMetaData = hike.photoReferences?[0] else {
             print("No photo meta data")
             return
-        }
+        } */
         
        // GMSPlacesClient.loadPlacePhoto(<#T##self: GMSPlacesClient##GMSPlacesClient#>)
         

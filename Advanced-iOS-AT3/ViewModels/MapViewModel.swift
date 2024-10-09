@@ -153,7 +153,6 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             GMSPlaceProperty.rating,
             GMSPlaceProperty.userRatingsTotal,
             GMSPlaceProperty.iconImageURL,
-            GMSPlaceProperty.photos
         ].map {$0.rawValue}
         
         let request = GMSPlaceSearchByTextRequest(textQuery: textQuery, placeProperties: placeProperties)
@@ -215,12 +214,11 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let rating = hikePlace.rating
                let userRatingsTotal = hikePlace.userRatingsTotal
                let imageURL = hikePlace.iconImageURL
-               let photoReferences = hikePlace.photos
                
                let favouriteHikes = fetchFavoriteHikes()
                
                // Create the annotation
-               let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, userRatingsTotal: Int(userRatingsTotal), imageURL: imageURL, title: name, coordinate: coordinate, photoReferences: photoReferences)
+               let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, userRatingsTotal: Int(userRatingsTotal), imageURL: imageURL, title: name, coordinate: coordinate)
                
                if favouriteHikes.contains(where: { $0.placeId == placeId }) {
                    hike.isFavourite = true  // Mark as favorite

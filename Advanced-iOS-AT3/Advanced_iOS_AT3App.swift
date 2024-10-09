@@ -19,9 +19,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         GMSPlacesClient.provideAPIKey("AIzaSyDI99P3GEoDHLv8mXYFMeAoMIH8yLi6w4I")
         
-        
-        
-    return true
+        return true
         
     }
 }
@@ -29,49 +27,40 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct Advanced_iOS_AT3App: App {
     
-    // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    // Observing the appearance mode stored in UserDefaults
-    @AppStorage("appearanceMode") private var appearanceMode: SettingsView.AppearanceMode = .system
+    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
     
     let persistenceController = PersistenceController.shared
-    
     @StateObject private var navigationController = NavigationController()
-    
-    // Initialize MapViewModel with Core Data context
     @StateObject private var mapViewModel = MapViewModel(context: PersistenceController.shared.container.viewContext)
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationController.path) {
                 UserView()
-                    .preferredColorScheme(colorScheme(from: appearanceMode))
                     .navigationDestination(for: NavigationController.AppScreen.self) { screen in
-                     
                         switch screen {
                         case .HikeDetails(let hike):
                             HikeDetailsView(hike: hike)
                         }
-                        
                     }
             }
-            .environment(\.managedObjectContext, persistenceController.container.viewContext) // Inject Core Data context
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
             .environmentObject(navigationController)
             .environmentObject(mapViewModel)
-            
+            .preferredColorScheme(colorScheme(for: appearanceMode))
         }
     }
     
-    // Convert the stored AppearanceMode to SwiftUI ColorScheme
-    private func colorScheme(from mode: SettingsView.AppearanceMode) -> ColorScheme? {
-        switch mode {
+    func colorScheme(for appearanceMode: AppearanceMode) -> ColorScheme? {
+        switch appearanceMode {
+        case .system:
+            return nil
         case .light:
             return .light
         case .dark:
             return .dark
-        case .system:
-            return nil // Follow system setting
         }
     }
 }

@@ -48,6 +48,7 @@ struct HikeDetailsView: View {
                         .resizable()
                         .foregroundStyle(viewModel.isFavourite ? .red : .gray)
                         .frame(width: 30, height: 30)
+                        .padding()
                 }
                 
             }

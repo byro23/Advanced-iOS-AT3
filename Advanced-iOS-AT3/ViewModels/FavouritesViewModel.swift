@@ -8,13 +8,19 @@
 import GooglePlaces
 import Foundation
 import CoreLocation
+import CoreData
 
 class FavouritesViewModel: ObservableObject {
     
     private let placesClient = GMSPlacesClient.shared() // Initialize the GMSPlacesClient
+    @Published var isLoading = false
+    @Published var tappedFavourite = false
+    @Published var tappedClearAll = false
+    @Published var tappedCloudBackup = false
     
     // Function to fetch place details and return a Hike object
     func fetchPlace(placeId: String) async -> Hike? {
+        isLoading = true
         // Use Swift's async/await to handle the asynchronous callback
         return await withCheckedContinuation { continuation in
             // Specify the place data fields you want to fetch
@@ -25,6 +31,7 @@ class FavouritesViewModel: ObservableObject {
                 if let error = error {
                     // Handle the error and return nil
                     print("An error occurred: \(error.localizedDescription)")
+                    self.isLoading = false
                     continuation.resume(returning: nil)
                     return
                 }
@@ -45,14 +52,43 @@ class FavouritesViewModel: ObservableObject {
                     // Print the place name for debugging
                     print("The selected place is: \(place.name ?? "Unknown")")
                     
+                    self.isLoading = false
                     // Return the Hike object
                     continuation.resume(returning: hike)
                 } else {
                     // If the place is nil, return nil
+                    self.isLoading = false
                     continuation.resume(returning: nil)
                 }
             }
         }
+    }
+    
+    func deleteAllFavourites(context: NSManagedObjectContext) {
+        // Create a fetch request to get all FavouriteHikes
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavouriteHikes.fetchRequest()
+        
+        // Create a batch delete request
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            // Perform the batch delete request
+            try context.execute(deleteRequest)
+            
+            // Used to refresh the view
+            context.reset()
+           
+            // Save the context to persist the changes
+            try context.save()
+            
+            print("All favourites deleted successfully")
+        } catch let error as NSError {
+            print("Could not delete favourites. \(error), \(error.userInfo)")
+        }
+    }
+    
+    func backupFavourites(context: NSManagedObjectContext) {
+        
     }
 }
 

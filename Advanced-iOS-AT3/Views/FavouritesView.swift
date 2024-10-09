@@ -13,13 +13,11 @@ struct FavouritesView: View {
     @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var mapViewModel: MapViewModel
     @StateObject var viewModel = FavouritesViewModel()
-    @State var tappedFavourite: Bool = false
     @State var selectedHike: FavouriteHikes?
-    
     // Use @FetchRequest to fetch FavouriteHikes from Core Data
    @FetchRequest(
        entity: FavouriteHikes.entity(), // Entity to fetch
-       sortDescriptors: [NSSortDescriptor(keyPath: \FavouriteHikes.addTime, ascending: true)], // Sort by add time
+       sortDescriptors: [NSSortDescriptor(keyPath: \FavouriteHikes.addTime, ascending: false)], // Sort by add time
        animation: .default
    ) private var favouriteHikes: FetchedResults<FavouriteHikes>
     
@@ -27,10 +25,38 @@ struct FavouritesView: View {
     var body: some View {
         NavigationView {
             VStack {
+                HStack {
+                    
+                    Button {
+                        viewModel.tappedCloudBackup = true
+                    } label: {
+                        if(!favouriteHikes.isEmpty) {
+                            Image(systemName: "icloud.and.arrow.up")
+                            Text("Cloud backup")
+                        }
+                    }
+                    .padding()
+                    
+                    Spacer()
+                    
+                    Button {
+                        viewModel.tappedClearAll = true
+                    } label: {
+                        if(!favouriteHikes.isEmpty) {
+                            Text("Clear all")
+                        }
+                    }
+                    .padding()
+                }
+                
+                
                 if(favouriteHikes.isEmpty) {
                     Text("No favourites.")
                         .font(.headline)
                         .padding()
+                }
+                else if(viewModel.isLoading) {
+                    ProgressView()
                 }
                 else {
                     List {
@@ -38,7 +64,7 @@ struct FavouritesView: View {
                             HikeRow(hike: hike)
                                 .onTapGesture {
                                     selectedHike = hike
-                                    tappedFavourite = true
+                                    viewModel.tappedFavourite = true
                                 }
                         }
                         .onDelete(perform: deleteItem)
@@ -46,7 +72,7 @@ struct FavouritesView: View {
                 }
             }
             .navigationTitle("Favourites")
-            .confirmationDialog("Choose an option", isPresented: $tappedFavourite) {
+            .confirmationDialog("Choose an option", isPresented: $viewModel.tappedFavourite) {
                 Button("Show on map") {
                     if let hike = selectedHike {
                         print("Saved hike latitude: \(hike.latitude). Saved hike longitude: \(hike.longitude)")
@@ -73,6 +99,25 @@ struct FavouritesView: View {
                 
                 Button("Cancel", role: .cancel) {}
             }
+            .alert("Are you sure? This action cannot be undone.", isPresented: $viewModel.tappedClearAll) {
+                Button("Delete all", role: .destructive) {
+                    viewModel.deleteAllFavourites(context: viewContext)
+                    viewModel.tappedClearAll = false
+                }
+                Button("Cancel", role: .cancel) {
+                    viewModel.tappedClearAll = false
+                }
+            }
+            .alert("This will upload a copy of your favourites to the cloud that can be retrieved at a later time. Are you sure?", isPresented: $viewModel.tappedCloudBackup) {
+                
+                Button("Confirm") {
+                    
+                }
+                Button("Cancel", role: .cancel) {
+                    viewModel.tappedCloudBackup = false
+                }
+            }
+            
         }
         
     }

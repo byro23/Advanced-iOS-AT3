@@ -13,6 +13,8 @@ struct FavouritesView: View {
     @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var mapViewModel: MapViewModel
     @StateObject var viewModel = FavouritesViewModel()
+    @State var tappedFavourite: Bool = false
+    @State var selectedHike: FavouriteHikes?
     
     // Use @FetchRequest to fetch FavouriteHikes from Core Data
    @FetchRequest(
@@ -26,7 +28,7 @@ struct FavouritesView: View {
         NavigationView {
             VStack {
                 if(favouriteHikes.isEmpty) {
-                    Text("No favourite hikes found.")
+                    Text("No favourites.")
                         .font(.headline)
                         .padding()
                 }
@@ -35,8 +37,8 @@ struct FavouritesView: View {
                         ForEach(favouriteHikes) { hike in
                             HikeRow(hike: hike)
                                 .onTapGesture {
-                                    mapViewModel.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: hike.latitude, longitude: hike.longitude), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-                                    navigationController.currentTab = .map
+                                    selectedHike = hike
+                                    tappedFavourite = true
                                 }
                         }
                         .onDelete(perform: deleteItem)
@@ -44,6 +46,23 @@ struct FavouritesView: View {
                 }
             }
             .navigationTitle("Favourites")
+            .confirmationDialog("Choose an option", isPresented: $tappedFavourite) {
+                Button("Show on map") {
+                    if let hike = selectedHike {
+                        mapViewModel.region = MKCoordinateRegion(
+                            center: CLLocationCoordinate2D(latitude: hike.latitude, longitude: hike.longitude),
+                            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+                        )
+                        navigationController.currentTab = .map
+                    }
+                }
+                
+                Button("Show hike details") {
+                    
+                }
+                
+                Button("Cancel", role: .cancel) {}
+            }
         }
         
     }

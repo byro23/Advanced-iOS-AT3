@@ -226,8 +226,14 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                
                // Prevents an existing annotation from being re-added
                if !annotations.contains(where: { annotation in
-                   return annotation.title == hike.title && annotation.isFavourite == hike.isFavourite
+                   return annotation.title == hike.title
                }) {
+                   annotations.append(hike)
+               }
+               else {
+                   annotations.removeAll { annotation in
+                       annotation.title == hike.title
+                   }
                    annotations.append(hike)
                }
            }

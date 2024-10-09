@@ -5,9 +5,54 @@
 //  Created by Byron Lester on 8/10/2024.
 //
 
+import GooglePlaces
 import Foundation
-import Swift
+import CoreLocation
 
 class FavouritesViewModel: ObservableObject {
     
+    private let placesClient = GMSPlacesClient.shared() // Initialize the GMSPlacesClient
+    
+    // Function to fetch place details and return a Hike object
+    func fetchPlace(placeId: String) async -> Hike? {
+        // Use Swift's async/await to handle the asynchronous callback
+        return await withCheckedContinuation { continuation in
+            // Specify the place data fields you want to fetch
+            let fields: GMSPlaceField = [.name, .placeID, .coordinate, .formattedAddress, .rating, .userRatingsTotal, .iconImageURL]
+            
+            // Fetch place details from the Google Places API
+            placesClient.fetchPlace(fromPlaceID: placeId, placeFields: fields, sessionToken: nil) { (place: GMSPlace?, error: Error?) in
+                if let error = error {
+                    // Handle the error and return nil
+                    print("An error occurred: \(error.localizedDescription)")
+                    continuation.resume(returning: nil)
+                    return
+                }
+                
+                if let place = place {
+                    // Create a Hike object using the retrieved place details
+                    let hike = Hike(
+                        placeId: place.placeID,
+                        summary: place.editorialSummary ?? "No summary available", // Use default if nil
+                        address: place.formattedAddress,
+                        rating: place.rating,
+                        userRatingsTotal: Int(place.userRatingsTotal),
+                        imageURL: place.iconImageURL,
+                        title: place.name,
+                        coordinate: place.coordinate
+                    )
+                    
+                    // Print the place name for debugging
+                    print("The selected place is: \(place.name ?? "Unknown")")
+                    
+                    // Return the Hike object
+                    continuation.resume(returning: hike)
+                } else {
+                    // If the place is nil, return nil
+                    continuation.resume(returning: nil)
+                }
+            }
+        }
+    }
 }
+

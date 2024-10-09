@@ -49,6 +49,7 @@ struct FavouritesView: View {
             .confirmationDialog("Choose an option", isPresented: $tappedFavourite) {
                 Button("Show on map") {
                     if let hike = selectedHike {
+                        print("Saved hike latitude: \(hike.latitude). Saved hike longitude: \(hike.longitude)")
                         mapViewModel.region = MKCoordinateRegion(
                             center: CLLocationCoordinate2D(latitude: hike.latitude, longitude: hike.longitude),
                             span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
@@ -58,7 +59,16 @@ struct FavouritesView: View {
                 }
                 
                 Button("Show hike details") {
-                    
+                    Task {
+                        if let hike = await viewModel.fetchPlace(placeId: selectedHike?.placeId ?? "") {
+                            // Now you can use the hike object outside of the callback
+                            print("Hike found: \(hike.title ?? "No title")")
+                            // For example, navigate to another screen with the hike details
+                            navigationController.path.append(NavigationController.AppScreen.HikeDetails(hike: hike))
+                        } else {
+                            print("No hike found.")
+                        }
+                    }
                 }
                 
                 Button("Cancel", role: .cancel) {}

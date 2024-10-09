@@ -13,7 +13,7 @@ struct HeaderView: View {
             
             Image(systemName: "map")
                 .imageScale(.large)
-                .foregroundStyle(.brown)
+                .foregroundStyle(.green)
             
             Text("Hikes Near Me")
                 .font(.title)

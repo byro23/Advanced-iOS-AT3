@@ -45,6 +45,9 @@ struct HikeDetailsView: View {
                     
                 } label: {
                     Image(systemName: viewModel.isFavourite ? "heart.fill" : "heart")
+                        .resizable()
+                        .foregroundStyle(viewModel.isFavourite ? .red : .gray)
+                        .frame(width: 30, height: 30)
                 }
                 
             }

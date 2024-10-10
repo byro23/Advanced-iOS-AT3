@@ -30,11 +30,25 @@ struct SettingsView: View {
                             await viewModel.restoreBackup(context: viewContext)
                         }
                     } label: {
-                        Text("Restore favourites from cloud backup")
+                        Text("Restore favourites from cloud")
                     }
                 } header: {
                     Text("Backup")
                 }
+                if(viewModel.isRestoring) {
+                    ProgressView()
+                }
+                if(viewModel.isRestoreSuccessful) {
+                    Text("Restore success")
+                        .foregroundStyle(.green)
+                }
+                else if(viewModel.isRestoreFailure) {
+                    Text("Restore failed. Please try again.")
+                        .foregroundStyle(.red)
+                }
+                
+                
+                
 
             }
         }

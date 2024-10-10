@@ -9,10 +9,14 @@ import Foundation
 import CoreData
 
 class SettingsViewModel: ObservableObject {
-    
+    @Published var isRestoring = false
+    @Published var isRestoreSuccessful = false
+    @Published var isRestoreFailure = false
     
     func restoreBackup(context: NSManagedObjectContext) async {
-        
+        isRestoring = true
+        isRestoreSuccessful = false
+        isRestoreFailure = false
         do {
             let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
             
@@ -38,9 +42,12 @@ class SettingsViewModel: ObservableObject {
                 
                 try context.save()
             }
+            isRestoring = false
+            isRestoreSuccessful = true
             print("Restore from backup successful.")
         }
         catch {
+            isRestoreFailure = true
             print("Error restoring backup: \(error.localizedDescription)")
         }
         

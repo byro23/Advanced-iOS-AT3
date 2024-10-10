@@ -18,9 +18,3 @@ struct ListSearchesView: View {
         }
     }
 }
-
-#Preview {
-    let persistenceController = PersistenceController.preview
-    let viewContext = persistenceController.container.viewContext
-    ListSearchesView(searchQueries: SearchQuery.mock(context: viewContext))
-}

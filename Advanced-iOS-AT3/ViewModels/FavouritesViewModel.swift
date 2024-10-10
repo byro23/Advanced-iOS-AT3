@@ -9,6 +9,7 @@ import GooglePlaces
 import Foundation
 import CoreLocation
 import CoreData
+import FirebaseFirestore
 
 class FavouritesViewModel: ObservableObject {
     
@@ -17,6 +18,7 @@ class FavouritesViewModel: ObservableObject {
     @Published var tappedFavourite = false
     @Published var tappedClearAll = false
     @Published var tappedCloudBackup = false
+    @Published var isBackingUp = false
     
     // Function to fetch place details and return a Hike object
     func fetchPlace(placeId: String) async -> Hike? {
@@ -87,8 +89,37 @@ class FavouritesViewModel: ObservableObject {
         }
     }
     
-    func backupFavourites(context: NSManagedObjectContext) {
+    @MainActor
+    func backupFavourites(context: NSManagedObjectContext) async {
+        isBackingUp = true
         
+        let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
+        
+        do {
+            let favouriteHikes = try context.fetch(fetchRequest)
+            
+            guard !favouriteHikes.isEmpty else {
+                print("No favourites to backup")
+                isBackingUp = false
+                return
+            }
+            
+            for hike in favouriteHikes {
+                let hikeData: [String: Any] = [
+                    "placeId": hike.placeId ?? "",
+                    "placeName": hike.placeName ?? ""
+                    
+                ]
+                
+                try await FirebaseManager.shared.addDocument(docData: hikeData, toCollection: FireStoreCollection.favourites.rawValue)
+                print("Favourites added successfully.")
+                isBackingUp = false
+            }
+            
+        } catch {
+            isBackingUp = false
+            print("Error adding document to database")
+        }
     }
 }
 

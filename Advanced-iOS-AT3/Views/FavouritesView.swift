@@ -30,14 +30,19 @@ struct FavouritesView: View {
                     Button {
                         viewModel.tappedCloudBackup = true
                     } label: {
-                        if(!favouriteHikes.isEmpty) {
+                        if(!favouriteHikes.isEmpty && viewModel.isBackingUp == false) {
                             Image(systemName: "icloud.and.arrow.up")
                             Text("Cloud backup")
+                        }
+                        else if(viewModel.isBackingUp) {
+                            HStack {
+                                Text("Uploading")
+                                ProgressView()
+                            }
                         }
                     }
                     .padding()
                     
-                    Spacer()
                     
                     Button {
                         viewModel.tappedClearAll = true
@@ -47,7 +52,9 @@ struct FavouritesView: View {
                         }
                     }
                     .padding()
+                
                 }
+                
                 
                 
                 if(favouriteHikes.isEmpty) {
@@ -108,9 +115,12 @@ struct FavouritesView: View {
                     viewModel.tappedClearAll = false
                 }
             }
-            .alert("This will upload a copy of your favourites to the cloud that can be retrieved at a later time. Are you sure?", isPresented: $viewModel.tappedCloudBackup) {
+            .alert("This will upload a copy of your favourites to the cloud that can be retrieved at a later time. This will overwrite any previous backup.", isPresented: $viewModel.tappedCloudBackup) {
                 
                 Button("Confirm") {
+                    Task {
+                        await viewModel.backupFavourites(context: viewContext)
+                    }
                     
                 }
                 Button("Cancel", role: .cancel) {

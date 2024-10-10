@@ -19,20 +19,29 @@ class FirebaseManager {
     
     
     // Generic function to add any Encodable object to Firestore
-    func addDocument<T: Encodable>(object: T, toCollection collection: String, forUser uid: String) throws {
+    func addDocument(docData: [String: Any], toCollection collection: String) async throws {
         let collectionRef = db.collection(collection)
         
         do {
-            try collectionRef.addDocument(from: object) { error in
-                if let error = error {
-                    print("Error adding \(T.self) for \(uid) to Firestore: \(error.localizedDescription)")
-                } else {
-                    print("\(T.self) added successfully")
-                }
-            }
-        } catch let error {
-            print("Error adding \(T.self) for \(uid) to Firestore: \(error.localizedDescription)")
+            try await deleteCollection(collectionRef)
+            try await collectionRef.addDocument(data: docData)
         }
+        catch {
+           try await deleteCollection(collectionRef)
+        }
+        
+    }
+    
+    func deleteCollection(_ collectionRef: CollectionReference) async throws {
+        // Get all documents in the collection
+        let documents = try await collectionRef.getDocuments()
+
+        // Iterate through each document and delete it
+        for document in documents.documents {
+            try await document.reference.delete()
+        }
+        
+        print("All documents deleted from collection \(collectionRef.path)")
     }
     
     

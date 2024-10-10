@@ -2,7 +2,7 @@
 //  SearchQuery+CoreDataProperties.swift
 //  Advanced-iOS-AT3
 //
-//  Created by Byron Lester on 5/10/2024.
+//  Created by Byron Lester on 10/10/2024.
 //
 //
 

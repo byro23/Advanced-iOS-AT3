@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 
+// Manages the app navigation with the Navigation Stack and Tabview
 class NavigationController: ObservableObject {
     
     enum AppScreen: Hashable {
-        // case Home
         case HikeDetails(hike: Hike)
     }
     

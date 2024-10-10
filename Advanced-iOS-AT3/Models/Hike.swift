@@ -11,6 +11,7 @@ import GooglePlaces
 
 import MapKit
 
+// The model for each hike - primarily used in the map annotations
 class Hike: NSObject, MKAnnotation, Identifiable {
     let id: String = UUID().uuidString
     let placeId: String?

@@ -47,7 +47,7 @@ struct MapView: View {
                     .overlay {
                         ClearButton(text: $viewModel.searchableText)
                             .padding(.trailing, 20)
-                            .padding(.bottom)
+                            //.padding(.bottom)
                     }
                 
                 if(!viewModel.searchResults.isEmpty) {

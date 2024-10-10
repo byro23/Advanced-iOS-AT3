@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Used to provide a star icon to highlight the rating of the hike
 struct StarView: View {
     let rating: Double  // Rating of the hike, e.g., 4.5
 

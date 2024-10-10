@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Defines the structure of the data contained in the favourite rows
 struct AddressResult: Identifiable {
     let id = UUID()
     let title: String

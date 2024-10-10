@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Used to debounce API requests
 class Debouncer : ObservableObject {
     private var workItem: DispatchWorkItem?
     

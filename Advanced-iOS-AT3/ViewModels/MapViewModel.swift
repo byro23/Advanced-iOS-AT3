@@ -6,7 +6,7 @@ import GooglePlaces
 
 class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
-    @Published var annotations: [Hike] = []
+    @Published var annotations: [Hike] = [] // Stores the annotation information
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
     )
@@ -16,7 +16,6 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
     @Published var searchableText: String = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
-    @Published var recentSearches: [SearchQuery] = []
     @Published var nearbyHikeResults: [GMSPlace] = []
     var fetchingSuggestions: Bool = false
     var isZoomedIn: Bool = true
@@ -56,7 +55,9 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                         span: MKCoordinateSpan(latitudeDelta: 35.0, longitudeDelta: 40.0)
                     )
                     
+                    // Limit region to Australia
                     searchCompleter.region = australiaRegion
+                    
                     
                     self.searchCompleter.queryFragment = query
                     
@@ -67,6 +68,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
     }
     
+    // Takes the user to the searched/suggested location
     func selectLocation(for suggestion: MKLocalSearchCompletion,  context: NSManagedObjectContext) {
         let searchRequest = MKLocalSearch.Request(completion: suggestion)
         let search = MKLocalSearch(request: searchRequest)
@@ -78,51 +80,18 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                     span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                 )
                 
-                // print("Searched coordinates: \(coordinate.latitude) \(coordinate.longitude)")
                 
                 self.searchableText = ""
-                self.saveRecentSearch(queryText: suggestion.title, latitude: coordinate.latitude, longitude: coordinate.longitude, context: context)
             }
         }
     }
-    
-    private func saveRecentSearch(queryText: String, latitude: Double, longitude: Double, context: NSManagedObjectContext) {
-        
-        let newSearchQuery = NSEntityDescription.insertNewObject(forEntityName: "SearchQuery", into: context)
-            
-        newSearchQuery.setValue(queryText, forKey: "queryText")
-        newSearchQuery.setValue(Date(), forKey: "date")
-        newSearchQuery.setValue(latitude, forKey: "latitude")
-        newSearchQuery.setValue(longitude, forKey: "longitude")
-        
-        do {
-            try context.save()
-            print("SearchQuery saved successfully!")
-        } catch {
-            print("Failed to save SearchQuery: \(error.localizedDescription)")
-        }
-        
-    }
-    
-    // Function to fetch SearchQuery objects from Core Data
-    func fetchRecentSearches(context: NSManagedObjectContext) {
-        let fetchRequest: NSFetchRequest<SearchQuery> = SearchQuery.fetchRequest()  // Create fetch request
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \SearchQuery.date, ascending: false)]  // Sort by date
-        
-        do {
-            // Execute fetch request and assign the result to recentSearches
-            recentSearches = try context.fetch(fetchRequest)
-        } catch {
-            print("Error fetching recent searches: \(error.localizedDescription)")
-        }
-    }
-    
     
     @MainActor
     func fetchNearbyHikesByTextSearch() { // Fetches the places (importantly the coordinates) through the Google Places API
         
         var searchRadius: Double
-
+        
+        // Defines the search radiuses for hikes based on map zoom
         if region.span.longitudeDelta > 0.5 || region.span.latitudeDelta > 0.5 {
             searchRadius = 50000 // 50 km for zoomed-out view (country-level)
         } else if region.span.longitudeDelta > 0.1 || region.span.latitudeDelta > 0.1 {
@@ -137,10 +106,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
         let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, searchRadius)
         
-        print("Region center: \(region.center)")
-        print("Latitude delta: \(region.span.latitudeDelta)")
-        print("Longitude delta: \(region.span.longitudeDelta)")
-        
+        // Specify the location must relate to 'hiking trail'
         let textQuery = "Hiking trail"
         
         // Specify the fields to return in the GMSPlace object for each place in the response.
@@ -155,10 +121,13 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             GMSPlaceProperty.iconImageURL,
         ].map {$0.rawValue}
         
+        // Define the request based on the text query and desired properties
         let request = GMSPlaceSearchByTextRequest(textQuery: textQuery, placeProperties: placeProperties)
         
+        // Specify the location region to search
         request.locationBias = circularLocationRestriction
         
+        // Undergo the request
         let callback: GMSPlaceSearchByTextResultCallback = { [weak self] results, error in
           guard let self, error == nil else {
             if let error {
@@ -169,11 +138,13 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
           guard let results = results as? [GMSPlace] else {
             return
           }
-            nearbyHikeResults = results
+            nearbyHikeResults = results // Assign the results to the class-wide property
         }
-
+        
+        // Pass callback to search function
         GMSPlacesClient.shared().searchByText(with: request, callback: callback)
         
+        // Begin annotating the map based on the results
         annotateNearbyHikes()
     }
     
@@ -213,35 +184,33 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                let userRatingsTotal = hikePlace.userRatingsTotal
                let imageURL = hikePlace.iconImageURL
                
-               let favouriteHikes = fetchFavoriteHikes()
+               let favouriteHikes = fetchFavoriteHikes() // Fetch the local stored favourites
                
                // Create the annotation
                let hike = Hike(placeId: placeId, summary: summary, address: address, rating: rating, userRatingsTotal: Int(userRatingsTotal), imageURL: imageURL, title: name, coordinate: coordinate)
                
+               // If core data contains a hike location with the same id, mark it as favourite
                if favouriteHikes.contains(where: { $0.placeId == placeId }) {
-                   hike.isFavourite = true  // Mark as favorite
+                   hike.isFavourite = true
                }
                
-               // Prevents an existing annotation from being re-added
-               if !annotations.contains(where: { annotation in
-                   return annotation.title == hike.title
-               }) {
-                   annotations.append(hike)
-               }
-               else {
-                   annotations.removeAll { annotation in
-                       annotation.title == hike.title
+               // Check if an annotation with the same title exists
+               if let existingIndex = annotations.firstIndex(where: { $0.title == hike.title }) {
+                   // If the existing annotation has a different favorite status, replace it
+                   if annotations[existingIndex].isFavourite != hike.isFavourite {
+                       annotations.remove(at: existingIndex) // Remove the existing annotation
+                       annotations.append(hike) // Add the new hike annotation
                    }
+               } else {
+                   // If no existing annotation is found, append the new hike annotation
                    annotations.append(hike)
                }
+
            }
-        
-        if annotations.count > 0 {
-            print("Current annotations \(annotations.count)")
-        }
         
     }
     
+    // Helper function that fetches favourite hikes from core data
     func fetchFavoriteHikes() -> [FavouriteHikes] {
         let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
         do {

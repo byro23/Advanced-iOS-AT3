@@ -8,11 +8,12 @@
 import Foundation
 import FirebaseFirestore
 
-
+// Stores the collection name
 enum FireStoreCollection: String {
     case favourites = "favourites"
 }
 
+// Manages requests to Google Firestore Database
 class FirebaseManager {
     static let shared = FirebaseManager()
     private let db = Firestore.firestore()
@@ -61,12 +62,6 @@ class FirebaseManager {
             // Return the array of FavouriteHikes
             return favourites
         }
-    
-    func deleteDocument(uid: String, collectionName: String, documentId: String) async throws {
-        let documentRef = db.collection("users").document(uid).collection(collectionName).document(documentId)
-        
-        try await documentRef.delete()
-    }
     
 }
 

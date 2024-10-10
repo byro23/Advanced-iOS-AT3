@@ -23,17 +23,17 @@ class FirebaseManager {
         let collectionRef = db.collection(collection)
         
         do {
-            try await deleteCollection(collectionRef)
             try await collectionRef.addDocument(data: docData)
         }
         catch {
-           try await deleteCollection(collectionRef)
+            try await deleteCollection(collection)
         }
         
     }
     
-    func deleteCollection(_ collectionRef: CollectionReference) async throws {
+    func deleteCollection(_ collectionRef: String) async throws {
         // Get all documents in the collection
+        let collectionRef = db.collection(collectionRef)
         let documents = try await collectionRef.getDocuments()
 
         // Iterate through each document and delete it

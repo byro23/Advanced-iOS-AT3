@@ -55,6 +55,18 @@ struct FavouritesView: View {
                 
                 }
                 
+                if(viewModel.backupSuccessful) {
+                    Text("Backup successful")
+                        .foregroundStyle(.green)
+                }
+                
+                if(viewModel.backupFailed) {
+                    Text("Error occurred during backup. Try again.")
+                        .foregroundStyle(.red)
+                }
+                
+                
+                
                 
                 
                 if(favouriteHikes.isEmpty) {

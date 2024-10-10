@@ -19,6 +19,8 @@ class FavouritesViewModel: ObservableObject {
     @Published var tappedClearAll = false
     @Published var tappedCloudBackup = false
     @Published var isBackingUp = false
+    @Published var backupSuccessful: Bool = false
+    @Published var backupFailed: Bool = false
     
     // Function to fetch place details and return a Hike object
     func fetchPlace(placeId: String) async -> Hike? {
@@ -96,6 +98,8 @@ class FavouritesViewModel: ObservableObject {
         let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
         
         do {
+            try await FirebaseManager.shared.deleteCollection(FireStoreCollection.favourites.rawValue) // Delete old backup
+            
             let favouriteHikes = try context.fetch(fetchRequest)
             
             guard !favouriteHikes.isEmpty else {
@@ -107,12 +111,16 @@ class FavouritesViewModel: ObservableObject {
             for hike in favouriteHikes {
                 let hikeData: [String: Any] = [
                     "placeId": hike.placeId ?? "",
-                    "placeName": hike.placeName ?? ""
-                    
+                    "placeName": hike.placeName ?? "",
+                    "address" : hike.address ?? "",
+                    "latitude" : Double(hike.latitude),
+                    "longitude" : Double(hike.longitude),
+                    "addTime" : hike.addTime as Any
                 ]
                 
                 try await FirebaseManager.shared.addDocument(docData: hikeData, toCollection: FireStoreCollection.favourites.rawValue)
                 print("Favourites added successfully.")
+                backupSuccessful = true
                 isBackingUp = false
             }
             

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// Used to show the addresses as part of the search auto-complete
 struct AddressRow: View {
     let address: AddressResult
         

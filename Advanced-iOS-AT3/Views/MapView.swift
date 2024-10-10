@@ -50,23 +50,6 @@ struct MapView: View {
                             .padding(.bottom)
                     }
                 
-                if(!viewModel.recentSearches.isEmpty) {
-                    HStack {
-                        Button {
-                            showRecentSearches.toggle()
-                        } label: {
-                            Text("Recent searches")
-                                .padding(.horizontal)
-                                .padding(.bottom, 8)
-                        }
-                        .popover(isPresented: $showRecentSearches) {
-                            // Add recent searches view here if needed
-                        }
-                        
-                        Spacer()
-                    }
-                }
-                
                 if(!viewModel.searchResults.isEmpty) {
                     List(viewModel.searchResults, id: \.self) { result in
                         Button {

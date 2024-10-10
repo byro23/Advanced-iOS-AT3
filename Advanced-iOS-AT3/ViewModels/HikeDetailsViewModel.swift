@@ -16,7 +16,6 @@ class HikeDetailsViewModel: ObservableObject {
     @Published var hikeImage: UIImage?
     @Published var isFavourite: Bool = false
     @Published var loadingImage: Bool = false
-    let placesClient = GMSPlacesClient.shared()
     
     
     init(hike: Hike) {
@@ -28,25 +27,54 @@ class HikeDetailsViewModel: ObservableObject {
         loadingImage = true
         let placeId = hike.placeId
         
+        let placesClient = GMSPlacesClient.shared()
+
         placesClient.lookUpPhotos(forPlaceID: placeId ?? "") { (photos, error) in
-
-          guard let photoMetadata: GMSPlacePhotoMetadata = photos?.results[0] else {
-            return }
-
-          // Request individual photos in the response list
-          let fetchPhotoRequest = GMSFetchPhotoRequest(photoMetadata: photoMetadata, maxSize: CGSizeMake(4800, 4800))
-            self.placesClient.fetchPhoto(with: fetchPhotoRequest, callback: {
-            (photoImage: UIImage?, error: Error?) in
-              guard let photoImage, error == nil else {
-                  print("Handle photo error: \(String(describing: error?.localizedDescription))")
-                  self.loadingImage = false
-                return }
-                self.hikeImage = photoImage
-              print("Display photo Image: ")
+            if let error = error {
+                print("Error looking up photos: \(error.localizedDescription)")
+                self.loadingImage = false
+                return
             }
-          )
+
+            guard let photoMetadata = photos?.results.first else {
+                print("No photo metadata found for place: \(placeId ?? "Unknown")")
+                self.loadingImage = false
+                return
+            }
+
+            print("Photo metadata: \(photoMetadata)")
+
+            // Request individual photos in the response list
+            let fetchPhotoRequest = GMSFetchPhotoRequest(photoMetadata: photoMetadata, maxSize: CGSizeMake(512, 512))
+            placesClient.fetchPhoto(with: fetchPhotoRequest) { (photoImage, error) in
+                if let error = error {
+                    print("Error fetching photo: \(error.localizedDescription)")
+                    
+                    if let nsError = error as NSError? {
+                        print("Detailed error info: \(nsError)")
+                        print("Error code: \(nsError.code), domain: \(nsError.domain)")
+                    }
+                    
+                    self.loadingImage = false
+                    return
+                }
+
+                guard let photoImage = photoImage else {
+                    print("No photo returned from fetchPhoto")
+                    self.loadingImage = false
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.hikeImage = photoImage
+                    self.loadingImage = false
+                }
+                print("Successfully fetched and displayed photo.")
+            }
         }
     }
+
+
     
     func addToFavourites(context: NSManagedObjectContext) {
         // Check if the hike is already a favorite

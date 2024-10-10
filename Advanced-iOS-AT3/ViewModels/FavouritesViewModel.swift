@@ -23,6 +23,7 @@ class FavouritesViewModel: ObservableObject {
     @Published var backupFailed: Bool = false
     
     // Function to fetch place details and return a Hike object
+    @MainActor
     func fetchPlace(placeId: String) async -> Hike? {
         isLoading = true
         // Use Swift's async/await to handle the asynchronous callback

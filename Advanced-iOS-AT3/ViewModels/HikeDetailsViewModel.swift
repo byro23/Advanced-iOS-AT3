@@ -15,20 +15,37 @@ class HikeDetailsViewModel: ObservableObject {
     @Published var hike: Hike
     @Published var hikeImage: UIImage?
     @Published var isFavourite: Bool = false
+    @Published var loadingImage: Bool = false
+    let placesClient = GMSPlacesClient.shared()
+    
     
     init(hike: Hike) {
         self.hike = hike
-        print(hike.rating)
+        loadHikePhoto()
     }
     
     func loadHikePhoto() {
-        /*guard let photoMetaData = hike.photoReferences?[0] else {
-            print("No photo meta data")
-            return
-        } */
+        loadingImage = true
+        let placeId = hike.placeId
         
-       // GMSPlacesClient.loadPlacePhoto(<#T##self: GMSPlacesClient##GMSPlacesClient#>)
-        
+        placesClient.lookUpPhotos(forPlaceID: placeId ?? "") { (photos, error) in
+
+          guard let photoMetadata: GMSPlacePhotoMetadata = photos?.results[0] else {
+            return }
+
+          // Request individual photos in the response list
+          let fetchPhotoRequest = GMSFetchPhotoRequest(photoMetadata: photoMetadata, maxSize: CGSizeMake(4800, 4800))
+            self.placesClient.fetchPhoto(with: fetchPhotoRequest, callback: {
+            (photoImage: UIImage?, error: Error?) in
+              guard let photoImage, error == nil else {
+                  print("Handle photo error: \(String(describing: error?.localizedDescription))")
+                  self.loadingImage = false
+                return }
+                self.hikeImage = photoImage
+              print("Display photo Image: ")
+            }
+          )
+        }
     }
     
     func addToFavourites(context: NSManagedObjectContext) {

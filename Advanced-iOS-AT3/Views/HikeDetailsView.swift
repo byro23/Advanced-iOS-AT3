@@ -19,15 +19,18 @@ struct HikeDetailsView: View {
     var body: some View {
         VStack{
             
-            AsyncImage(url: viewModel.hike.imageURL) { image in
-                image
-                    .resizable()  // Make the image resizable
-                    .scaledToFit() // Maintain aspect ratio within the frame
-            } placeholder: {
-                ProgressView()  // Show a placeholder while loading
+            if(viewModel.hikeImage != nil) {
+                Image(uiImage: viewModel.hikeImage!)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 300, height: 300)
             }
-            .frame(width: 100, height: 100)
-            .padding()
+            else if(viewModel.hikeImage == nil && viewModel.loadingImage == false) {
+                Text("No image to show.")
+            }
+            else if(viewModel.hikeImage == nil && viewModel.loadingImage) {
+                ProgressView()
+            }
             
             HStack {
                 Text(viewModel.hike.title ?? "Unknown place.")

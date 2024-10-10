@@ -135,11 +135,11 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
             searchRadius = 500 // 500 meters for highly zoomed-in view
         }
         
-        var circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, searchRadius)
-        
-        //let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, 10000)
+        let circularLocationRestriction = GMSPlaceCircularLocationOption(region.center, searchRadius)
         
         print("Region center: \(region.center)")
+        print("Latitude delta: \(region.span.latitudeDelta)")
+        print("Longitude delta: \(region.span.longitudeDelta)")
         
         let textQuery = "Hiking trail"
         
@@ -178,8 +178,6 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     }
     
     private func annotateNearbyHikes() {
-        
-        let annotationLimit = 250
         
         let visibleRegion = region
         
@@ -237,12 +235,6 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
                    annotations.append(hike)
                }
            }
-        
-        // Limit the number of annotations for performance
-        if annotations.count > annotationLimit {
-            let excessAnnotations = annotations.count - annotationLimit
-            annotations.removeFirst(excessAnnotations) // Remove oldest annotations
-        }
         
         if annotations.count > 0 {
             print("Current annotations \(annotations.count)")

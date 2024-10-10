@@ -76,6 +76,7 @@ struct FavouritesView: View {
                 }
                 else if(viewModel.isLoading) {
                     ProgressView()
+                    Spacer()
                 }
                 else {
                     List {

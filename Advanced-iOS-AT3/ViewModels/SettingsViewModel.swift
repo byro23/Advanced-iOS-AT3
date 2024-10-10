@@ -23,8 +23,9 @@ class SettingsViewModel: ObservableObject {
             // Perform the batch delete in Core Data
             try context.execute(deleteRequest)
             try context.save() // Save changes after deletion
+            context.reset()
             
-            for document in favouritesSnapshot {
+         for document in favouritesSnapshot {
                 let data = document
                 let favourite = FavouriteHikes(context: context)
                 

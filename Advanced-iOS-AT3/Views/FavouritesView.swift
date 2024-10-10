@@ -132,6 +132,11 @@ struct FavouritesView: View {
                 Button("Confirm") {
                     Task {
                         await viewModel.backupFavourites(context: viewContext)
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            viewModel.backupSuccessful = false
+                            viewModel.backupFailed = false
+                        }
                     }
                     
                 }

@@ -10,6 +10,8 @@ import SwiftUI
 struct SettingsView: View {
     
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
+    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject var viewModel = SettingsViewModel()
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -22,6 +24,18 @@ struct SettingsView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                 }
+                Section {
+                    Button() {
+                        Task {
+                            await viewModel.restoreBackup(context: viewContext)
+                        }
+                    } label: {
+                        Text("Restore favourites from cloud backup")
+                    }
+                } header: {
+                    Text("Backup")
+                }
+
             }
         }
         .navigationTitle("Settings")

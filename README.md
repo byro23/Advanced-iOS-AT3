@@ -26,6 +26,8 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Annotations generated through information fetched through Google places API
   - Location search autocomplete through Mapkit
   - Annotations appear as user navigates to certain regions
+
+  ![simulator_screenshot_7336566A-96C8-4038-AC1C-BA5B8A891A1F](https://github.com/user-attachments/assets/856d01e1-f684-4a8a-84b0-b0ef74a6a80f)
  
 - HikeDetailsView
   - Information is retrieved from 'Hike' object based on information fetched from Google Places API
@@ -35,9 +37,11 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Presents a list of the 'FavouriteHikes' stored in Core Data
   - Swipe gestures can be utilised to remove individual favourites
   - Clear all button will delete all favourites from core data
+
   - Cloud backup button will upload the current local copy of favourites to the cloud (Firestore database)
  
 - SettingsView
   -  Allows the user to change the app theme (dark mode, light mode, or system-based)
   -  Allows the user to restore cloud backups to the local persistent storage
-  -  
+  -  Allows the user to delete backup from cloud.
+  -  Allows user to preview the cloud backup.

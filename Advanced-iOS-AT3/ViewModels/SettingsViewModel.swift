@@ -12,12 +12,12 @@ import CoreData
 class SettingsViewModel: ObservableObject {
     @Published var tappedRestore: Bool = false
     @Published var tappedDelete: Bool = false
+    @Published var showSheet: Bool = false
+    @Published var noBackup: Bool = false
+    @Published var networkError: Bool = false
     
     @Published var isLoading = false
     @Published var isSuccessful = false
-    @Published var noCloudBackup = false
-    @Published var isFailure = false
-    
     @Published var statusMessage = ""
     
     var statusMessages: [String] = [
@@ -29,7 +29,24 @@ class SettingsViewModel: ObservableObject {
         "No backup exists."
     ]
     
-    fileprivate func removeStatusAfterDelay() {
+    func checkForBackup() async -> Bool {
+        do {
+            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            
+            if favouritesSnapshot.isEmpty {
+                noBackup = true
+                return false
+            }
+            
+            return true
+        } catch{
+            networkError = true
+            print("Error checking for backup: \(error.localizedDescription)")
+            return false
+        }
+    }
+    
+    private func removeStatusAfterDelay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.statusMessage = ""
         }
@@ -40,12 +57,10 @@ class SettingsViewModel: ObservableObject {
         
         isLoading = true
         isSuccessful = false
-        isFailure = false
         do {
             let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
             
             if favouritesSnapshot.isEmpty {
-                isFailure = true
                 isLoading = false
                 statusMessage = statusMessages[3]
                 removeStatusAfterDelay()

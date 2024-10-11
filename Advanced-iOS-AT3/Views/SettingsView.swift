@@ -26,7 +26,13 @@ struct SettingsView: View {
                 }
                 Section {
                     Button() {
-                        
+                        Task {
+                            let proceed = await viewModel.checkForBackup()
+                            
+                            if proceed {
+                                viewModel.showSheet = true
+                            }
+                        }
                     } label: {
                         Text("View backup")
                     }
@@ -93,6 +99,15 @@ struct SettingsView: View {
                 }
             }
             
+        }
+        .alert("No backup found. Upload a backup via the favourites menu.", isPresented: $viewModel.noBackup) {
+            Button("Ok", role: .cancel) {viewModel.noBackup = false}
+        }
+        .alert("Network error. Try again.", isPresented: $viewModel.networkError) {
+            Button("Ok", role: .cancel) {viewModel.networkError = false}
+        }
+        .sheet(isPresented: $viewModel.showSheet) {
+            BackupView(showSheet: $viewModel.showSheet)
         }
     }
 }

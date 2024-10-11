@@ -28,23 +28,31 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Annotations generated through information fetched through Google places API
   - Location search autocomplete through Mapkit
   - Annotations appear as user navigates to certain regions
+  - Screenshot:
  
-    ![image](https://github.com/user-attachments/assets/afec066f-3585-4e43-ad37-453b0f6cd751)
+  ![image](https://github.com/user-attachments/assets/afec066f-3585-4e43-ad37-453b0f6cd751)
 
  
 - HikeDetailsView
   - Information is retrieved from 'Hike' object based on information fetched from Google Places API
   - Favourite button instantly adds a 'FavouriteHike' to Core Data.
+  - Screenshot: 
  
 - FavouritesView
   - Presents a list of the 'FavouriteHikes' stored in Core Data
   - Swipe gestures can be utilised to remove individual favourites
   - Clear all button will delete all favourites from core data
+  - Cloud backup button which will upload current favo
+  - Screenshot:
 
-  - Cloud backup button will upload the current local copy of favourites to the cloud (Firestore database)
- 
+ ![image](https://github.com/user-attachments/assets/f5033c5c-047b-492d-a0e2-408ffe96b210)
+
 - SettingsView
-  -  Allows the user to change the app theme (dark mode, light mode, or system-based)
-  -  Allows the user to restore cloud backups to the local persistent storage
-  -  Allows the user to delete backup from cloud.
-  -  Allows user to preview the cloud backup.
+  - A toggle which allows the user to switch between light, dark, or system themes
+  - A view backup button which shows a snapshot of the favourites backup
+  - A restore cloud backup button which restores the backup to local storage,
+  - A delete favourites from cloud button which allows the user to remove their cloud backup
+  - Screenshot:
+ 
+  ![image](https://github.com/user-attachments/assets/02f9a2b3-f719-4242-a0f0-0532df2c3fa8)
+

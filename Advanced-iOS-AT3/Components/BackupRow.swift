@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// The view component of the favourite snapshot rows
 struct BackupRow: View {
     var favourite: FavouriteHike
     

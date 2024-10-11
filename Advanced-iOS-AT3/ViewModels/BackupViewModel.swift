@@ -18,7 +18,6 @@ class BackupViewModel: ObservableObject {
             isLoading = true
             let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
             
-            // backUpDate =
             
             for document in favouritesSnapshot {
                 let data = document

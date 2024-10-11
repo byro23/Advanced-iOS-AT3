@@ -18,7 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure() // Initialize Firebase services.
-        GMSPlacesClient.provideAPIKey("AIzaSy...") // Provide Google Places API key.
+        GMSPlacesClient.provideAPIKey("AIzaSyDI99P3GEoDHLv8mXYFMeAoMIH8yLi6w4I")
         
         return true
     }

@@ -27,9 +27,7 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Location search autocomplete through Mapkit
   - Annotations appear as user navigates to certain regions
  
-    ![image](https://github.com/user-attachments/assets/07139ec2-f4d0-4c8d-bd9c-fe2355fe2095)
-
-
+    ![image](https://github.com/user-attachments/assets/d03cad79-7c41-4073-99b1-b1bcf0706b92)
  
 - HikeDetailsView
   - Information is retrieved from 'Hike' object based on information fetched from Google Places API

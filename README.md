@@ -32,7 +32,6 @@ The last view of the app is the SettingsView, where the user can switch between 
  
   ![image](https://github.com/user-attachments/assets/afec066f-3585-4e43-ad37-453b0f6cd751)
 
- 
 - HikeDetailsView
   - Information is retrieved from 'Hike' object based on information fetched from Google Places API
   - Favourite button instantly adds a 'FavouriteHike' to Core Data.
@@ -45,7 +44,7 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Cloud backup button which will upload current favo
   - Screenshot:
 
- ![image](https://github.com/user-attachments/assets/f5033c5c-047b-492d-a0e2-408ffe96b210)
+ ![image](https://github.com/user-attachments/assets/068cb87e-762e-4fa3-9724-e0ada675322b)
 
 - SettingsView
   - A toggle which allows the user to switch between light, dark, or system themes
@@ -54,5 +53,6 @@ The last view of the app is the SettingsView, where the user can switch between 
   - A delete favourites from cloud button which allows the user to remove their cloud backup
   - Screenshot:
  
-  ![image](https://github.com/user-attachments/assets/02f9a2b3-f719-4242-a0f0-0532df2c3fa8)
+  ![image](https://github.com/user-attachments/assets/be04034b-974c-4ca4-a69f-5fa6d547feca)
+
 

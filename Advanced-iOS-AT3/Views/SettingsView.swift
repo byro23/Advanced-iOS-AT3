@@ -43,9 +43,7 @@ struct SettingsView: View {
                     
                     // Button to restore favourites from the cloud.
                     Button() {
-                        Task {
-                            await viewModel.restoreBackup(context: viewContext)
-                        }
+                        viewModel.tappedRestore = true
                     } label: {
                         HStack {
                             Text("Restore favourites from cloud")
@@ -56,9 +54,7 @@ struct SettingsView: View {
                     
                     // Button to delete backup from the cloud.
                     Button() {
-                        Task {
-                            await viewModel.deleteBackup()
-                        }
+                        viewModel.tappedDelete = true
                     } label: {
                         HStack {
                             Text("Delete favourites backup from cloud")

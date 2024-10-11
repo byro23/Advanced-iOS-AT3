@@ -16,7 +16,8 @@ struct BackupView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(alignment: .leading) {
+                
                 if(viewModel.isLoading) {
                     Spacer()
                     ProgressView()
@@ -24,13 +25,14 @@ struct BackupView: View {
                 }
                 else {
                     List {
+                        
                         ForEach(viewModel.favouriteHikes) { favouriteHike in
                             BackupRow(favourite: favouriteHike)
                         }
                     }
                 }
             }
-            .navigationTitle("Backup Snapshot")
+            .navigationTitle("Favourites Backup")
             .onAppear {
                 Task {
                     await viewModel.fetchFavourites()

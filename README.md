@@ -3,7 +3,7 @@
 ## 'Hikes Near Me' App
 
 ## Github Repository Link
-``` [LINK](https://github.com/byro23/Advanced-iOS-AT3) ```
+[LINK](https://github.com/byro23/Advanced-iOS-AT3)
 
 ## Package Dependences
 

@@ -109,7 +109,7 @@ struct MapView: View {
                                     Text(annotation.title ?? "Unknown")
                                         .font(.caption)
                                         .padding(5)
-                                        .background(Color.white.opacity(0.8))
+                                        .background(colorScheme == .dark ? Color.gray.opacity(0.8) : Color.white.opacity(0.8))
                                         .cornerRadius(8)
                                 }
                             }

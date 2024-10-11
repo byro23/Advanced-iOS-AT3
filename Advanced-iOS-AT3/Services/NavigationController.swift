@@ -11,10 +11,12 @@ import SwiftUI
 // Manages the app navigation with the Navigation Stack and Tabview
 class NavigationController: ObservableObject {
     
+    // Contains the one view which gets popped to the Nav stack
     enum AppScreen: Hashable {
         case HikeDetails(hike: Hike)
     }
     
+    // The different tabs
     enum Tab {
         case map
         case favourites

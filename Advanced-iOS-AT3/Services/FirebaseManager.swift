@@ -42,7 +42,6 @@ class FirebaseManager {
             try await document.reference.delete()
         }
         
-        print("All documents deleted from collection \(collectionRef.path)")
     }
     
     

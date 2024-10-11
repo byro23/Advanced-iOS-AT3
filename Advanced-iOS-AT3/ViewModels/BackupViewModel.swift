@@ -10,9 +10,8 @@ import Foundation
 @MainActor
 class BackupViewModel: ObservableObject {
     
-    @Published var isLoading = false
-    @Published var backUpDate: Date?
-    @Published var favouriteHikes: [FavouriteHike] = []
+    @Published var isLoading = false // Flag for fetching data
+    @Published var favouriteHikes: [FavouriteHike] = [] // Stores the array of snapshot favourites
     
     func fetchFavourites() async {
         do {

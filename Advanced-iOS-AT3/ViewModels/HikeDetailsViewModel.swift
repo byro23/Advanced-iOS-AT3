@@ -10,6 +10,7 @@ import UIKit
 import GooglePlaces
 import CoreData
 
+@MainActor
 class HikeDetailsViewModel: ObservableObject {
     
     @Published var hike: Hike
@@ -20,12 +21,13 @@ class HikeDetailsViewModel: ObservableObject {
     
     init(hike: Hike) {
         self.hike = hike
-        loadHikePhoto()
     }
     
     func loadHikePhoto() {
         loadingImage = true
         let placeId = hike.placeId
+        
+        print(hike.title)
         
         let placesClient = GMSPlacesClient.shared()
 
@@ -43,6 +45,7 @@ class HikeDetailsViewModel: ObservableObject {
             }
 
             print("Photo metadata: \(photoMetadata)")
+            
 
             // Request individual photos in the response list
             let fetchPhotoRequest = GMSFetchPhotoRequest(photoMetadata: photoMetadata, maxSize: CGSizeMake(512, 512))

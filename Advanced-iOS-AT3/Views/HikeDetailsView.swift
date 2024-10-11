@@ -10,7 +10,6 @@ import SwiftUI
 struct HikeDetailsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @StateObject var viewModel: HikeDetailsViewModel
-    // @State var hike: Hike
     
     init(hike: Hike) {
         _viewModel = StateObject(wrappedValue: HikeDetailsViewModel(hike: hike))
@@ -18,19 +17,6 @@ struct HikeDetailsView: View {
     
     var body: some View {
         VStack{
-            
-            if(viewModel.hikeImage != nil) {
-                Image(uiImage: viewModel.hikeImage!)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 300, height: 300)
-            }
-            else if(viewModel.hikeImage == nil && viewModel.loadingImage == false) {
-                Text("No image to show.")
-            }
-            else if(viewModel.hikeImage == nil && viewModel.loadingImage) {
-                ProgressView()
-            }
             
             HStack {
                 Text(viewModel.hike.title ?? "Unknown place.")
@@ -100,6 +86,7 @@ struct HikeDetailsView: View {
         }
         .onAppear {
             viewModel.checkIfFavourite(context: viewContext)
+            viewModel.loadHikePhoto()
         }
         
     }

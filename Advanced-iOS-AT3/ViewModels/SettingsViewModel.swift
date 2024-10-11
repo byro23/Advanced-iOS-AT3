@@ -8,17 +8,49 @@
 import Foundation
 import CoreData
 
+@MainActor
 class SettingsViewModel: ObservableObject {
-    @Published var isRestoring = false
-    @Published var isRestoreSuccessful = false
-    @Published var isRestoreFailure = false
+    @Published var tappedRestore: Bool = false
+    @Published var tappedDelete: Bool = false
+    
+    @Published var isLoading = false
+    @Published var isSuccessful = false
+    @Published var noCloudBackup = false
+    @Published var isFailure = false
+    
+    @Published var statusMessage = ""
+    
+    var statusMessages: [String] = [
+        "Restore successful ✅",
+        "Error restoring backup. Try again.",
+        "Error deleting favourites backup. Try again.",
+        "No favourites backup found. Please add a backup first.",
+        "Backup successfully deleted. ",
+        "No backup exists."
+    ]
+    
+    fileprivate func removeStatusAfterDelay() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.statusMessage = ""
+        }
+    }
     
     func restoreBackup(context: NSManagedObjectContext) async {
-        isRestoring = true
-        isRestoreSuccessful = false
-        isRestoreFailure = false
+        statusMessage = ""
+        
+        isLoading = true
+        isSuccessful = false
+        isFailure = false
         do {
             let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            
+            if favouritesSnapshot.isEmpty {
+                isFailure = true
+                isLoading = false
+                statusMessage = statusMessages[3]
+                removeStatusAfterDelay()
+                return
+            }
             
             // Clear existing Core Data "FavouriteHikes"
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavouriteHikes.fetchRequest()
@@ -42,14 +74,51 @@ class SettingsViewModel: ObservableObject {
                 
                 try context.save()
             }
-            isRestoring = false
-            isRestoreSuccessful = true
+            isLoading = false
+            isSuccessful = true
+            statusMessage = statusMessages[0]
+            
+            removeStatusAfterDelay()
+            
             print("Restore from backup successful.")
         }
         catch {
-            isRestoreFailure = true
+            // isFailure = true
+            isLoading = false
+            statusMessage = statusMessages[1]
             print("Error restoring backup: \(error.localizedDescription)")
+            
+            removeStatusAfterDelay()
         }
+    }
+    
+    func deleteBackup() async {
+        statusMessage = ""
+        isSuccessful = false
+        isLoading = true
+        do {
+            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            
+            if(favouritesSnapshot.isEmpty) {
+                isLoading = false
+                statusMessage = statusMessages[5]
+                removeStatusAfterDelay()
+                return
+            }
+            
+            try await FirebaseManager.shared.deleteCollection(FireStoreCollection.favourites.rawValue)
+            isLoading = false
+            isSuccessful = true
+            statusMessage = statusMessages[4]
+            
+        } catch{
+            statusMessage = statusMessages[2]
+            print("Error deleting favourites backup.")
+            
+            removeStatusAfterDelay()
+        }
+        
+        removeStatusAfterDelay()
         
     }
 }

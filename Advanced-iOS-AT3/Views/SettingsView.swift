@@ -26,25 +26,47 @@ struct SettingsView: View {
                 }
                 Section {
                     Button() {
+                        
+                    } label: {
+                        Text("View backup")
+                    }
+                    
+                    Button() {
                         Task {
                             await viewModel.restoreBackup(context: viewContext)
                         }
                     } label: {
-                        Text("Restore favourites from cloud")
+                        HStack {
+                            Text("Restore favourites from cloud")
+                            Spacer()
+                            Image(systemName: "icloud.and.arrow.down.fill")
+                        }
+                        
+                    }
+                    
+                    Button() {
+                        Task {
+                            await viewModel.deleteBackup()
+                        }
+                    } label: {
+                        HStack {
+                            Text("Delete favourites backup from cloud")
+                            Spacer()
+                            Image(systemName: "trash.fill")
+                        }
+                        .foregroundStyle(.red)
+                        
                     }
                 } header: {
                     Text("Backup")
                 }
-                if(viewModel.isRestoring) {
+                if(viewModel.isLoading) {
                     ProgressView()
                 }
-                if(viewModel.isRestoreSuccessful) {
-                    Text("Restore success")
-                        .foregroundStyle(.green)
-                }
-                else if(viewModel.isRestoreFailure) {
-                    Text("Restore failed. Please try again.")
-                        .foregroundStyle(.red)
+                
+                if(!viewModel.statusMessage.isEmpty) {
+                    Text(viewModel.statusMessage)
+                        .foregroundStyle(viewModel.isSuccessful ? .green : .red)
                 }
                 
                 
@@ -53,6 +75,25 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Settings")
+        .alert("Are you sure? This will overrite your current favourites.", isPresented: $viewModel.tappedRestore) {
+            Button("Cancel", role: .cancel) {}
+            
+            Button("Confirm") {
+                Task {
+                    await viewModel.restoreBackup(context: viewContext)
+                }
+            }
+        }
+        .alert("Are you sure? This will delete your favourites backup from the cloud.", isPresented: $viewModel.tappedDelete) {
+            Button("Cancel", role: .cancel) {}
+            
+            Button("Confirm") {
+                Task {
+                    await viewModel.deleteBackup()
+                }
+            }
+            
+        }
     }
 }
 

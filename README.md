@@ -1,4 +1,4 @@
-![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 18 19](https://github.com/user-attachments/assets/baa2786a-d88b-4bff-b61b-01d6498d92e2)# Advanced iOS AT3: Project 2 
+# Advanced iOS AT3: Project 2 
 
 ## 'Hikes Near Me' App
 
@@ -65,6 +65,14 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Account creation and detail storage achieved through Google FirebaseAuth/Firebase Firestore
   - Screenshot:
   - ![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 17 34](https://github.com/user-attachments/assets/646b662c-be39-49c9-8e6d-f40c1cf0294d)
+ 
+## Error Handling Strategy 
+
+The primary techniques employed for error handling are:
+- do-catch blocks for operations that can throw exceptions. This is mainly involved with API calls and remote database access.
+- Console logs providing a localised description of the error to improve troubleshooting efficiency. 
+- Errors that impact the user are communicated through popups or status messages.
+- Default behaviours for unexpected inputs or failures to prevent crashes.
 
 ## **Note**
 

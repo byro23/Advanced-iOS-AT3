@@ -19,7 +19,7 @@ These hikes are annotated on the map where users can tap on the hike to discover
 
 From the favourites menu, the user is presented their favourites showing the hike name and address. All favourites are order from most recent in descending order. In this menu, the users is able to delete individual favourites (through swiping), clear all favourites, or initiate a cloud backup. Furthermore, the user has the option to tap the a favourite, providing the option to go to the location on the map or view the favourite's additional details.
 
-The last view of the app is the SettingsView, where the user can switch between light and dark modes or default to the system setting. Lastly, the user can restore their favourites by tapping the 'restore favourites from cloud button'.
+The last view of the app is the SettingsView, where the user can switch between light and dark modes or default to the system setting. Lastly, the user can also managed their backup from this screen by viewing it, restoring or deleting it from the remote database.
 
 ## Primary Views
 
@@ -51,5 +51,12 @@ The last view of the app is the SettingsView, where the user can switch between 
   - A delete favourites from cloud button which allows the user to remove their cloud backup
   - Screenshot:
   - ![image](https://github.com/user-attachments/assets/be04034b-974c-4ca4-a69f-5fa6d547feca)
+ 
+- BackupView
+  - Displays the favourites snapshot contained in the cloud backup.
+  - Read only view with interactivity.
+  - Screenshot:
+    - ![image](https://github.com/user-attachments/assets/2f40d917-13b5-4388-9fa8-b081a0c466e6)
+
 
 

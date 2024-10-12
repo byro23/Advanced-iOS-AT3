@@ -8,7 +8,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
     @Published var annotations: [Hike] = [] // Stores the annotation information
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
-        center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5)
+        center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
     )
     
     // Ultimo Area

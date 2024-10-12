@@ -113,7 +113,7 @@ struct MapView: View {
                                 }
                             }
                         }
-                    }
+                    } 
                 }
             }
         }

@@ -93,7 +93,7 @@ class FavouritesViewModel: ObservableObject {
     }
     
     @MainActor
-    func backupFavourites(context: NSManagedObjectContext) async {
+    func backupFavourites(context: NSManagedObjectContext, uid: String) async {
         isBackingUp = true
         
         let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
@@ -119,7 +119,7 @@ class FavouritesViewModel: ObservableObject {
                     "addTime" : hike.addTime as Any
                 ]
                 
-                try await FirebaseManager.shared.addDocument(docData: hikeData, toCollection: FireStoreCollection.favourites.rawValue)
+                try await FirebaseManager.shared.addDocument(docData: hikeData, toCollection: FireStoreCollection.users.rawValue, toSubCollection: FireStoreCollection.favourites.rawValue, forUser: uid)
                 print("Favourites added successfully.")
                 backupSuccessful = true
                 isBackingUp = false

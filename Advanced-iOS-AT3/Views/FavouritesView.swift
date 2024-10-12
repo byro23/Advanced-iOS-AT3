@@ -12,6 +12,7 @@ struct FavouritesView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var mapViewModel: MapViewModel
+    @EnvironmentObject var authController: AuthController
     @StateObject var viewModel = FavouritesViewModel()
     @State var selectedHike: FavouriteHikes?
     // Use @FetchRequest to fetch FavouriteHikes from Core Data
@@ -132,7 +133,7 @@ struct FavouritesView: View {
                 
                 Button("Confirm") {
                     Task {
-                        await viewModel.backupFavourites(context: viewContext)
+                        await viewModel.backupFavourites(context: viewContext, uid: authController.currentUser?.id ?? "")
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                             viewModel.backupSuccessful = false

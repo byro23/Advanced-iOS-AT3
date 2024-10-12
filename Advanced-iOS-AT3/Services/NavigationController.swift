@@ -14,6 +14,8 @@ class NavigationController: ObservableObject {
     // Contains the one view which gets popped to the Nav stack
     enum AppScreen: Hashable {
         case HikeDetails(hike: Hike)
+        case Register
+        case User
     }
     
     // The different tabs

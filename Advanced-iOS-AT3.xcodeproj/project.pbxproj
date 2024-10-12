@@ -13,12 +13,36 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Advanced-iOS-AT3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "Advanced-iOS-AT3.app"; path = "/Users/byronlester/Documents/GitHub/Advanced-iOS-AT3/build/Debug-iphoneos/Advanced-iOS-AT3.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C15BF12D2CB9DEBE00641114 /* Exceptions for "Advanced-iOS-AT3" folder in "Advanced-iOS-AT3" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MyDataModel.xcdatamodeld,
+			);
+			target = C161FE182C9A64D20020469D /* Advanced-iOS-AT3 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		C15BF12E2CB9DEBE00641114 /* Exceptions for "Advanced-iOS-AT3" folder in "Compile Sources" phase from "Advanced-iOS-AT3" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = C161FE152C9A64D20020469D /* Sources */;
+			membershipExceptions = (
+				MyDataModel.xcdatamodeld,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		C161FE1B2C9A64D20020469D /* Advanced-iOS-AT3 */ = {
+		C15BF10A2CB9DEBE00641114 /* Advanced-iOS-AT3 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C15BF12D2CB9DEBE00641114 /* Exceptions for "Advanced-iOS-AT3" folder in "Advanced-iOS-AT3" target */,
+				C15BF12E2CB9DEBE00641114 /* Exceptions for "Advanced-iOS-AT3" folder in "Compile Sources" phase from "Advanced-iOS-AT3" target */,
+			);
 			path = "Advanced-iOS-AT3";
 			sourceTree = "<group>";
 		};
@@ -41,17 +65,8 @@
 		C161FE102C9A64D20020469D = {
 			isa = PBXGroup;
 			children = (
-				C161FE1B2C9A64D20020469D /* Advanced-iOS-AT3 */,
-				C161FE1A2C9A64D20020469D /* Products */,
+				C15BF10A2CB9DEBE00641114 /* Advanced-iOS-AT3 */,
 			);
-			sourceTree = "<group>";
-		};
-		C161FE1A2C9A64D20020469D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C161FE192C9A64D20020469D /* Advanced-iOS-AT3.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,7 +85,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				C161FE1B2C9A64D20020469D /* Advanced-iOS-AT3 */,
+				C15BF10A2CB9DEBE00641114 /* Advanced-iOS-AT3 */,
 			);
 			name = "Advanced-iOS-AT3";
 			packageProductDependencies = (
@@ -111,7 +126,7 @@
 				C1CA9A1E2CB359A6005FD96F /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = C161FE1A2C9A64D20020469D /* Products */;
+			productRefGroup = C161FE102C9A64D20020469D;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

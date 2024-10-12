@@ -7,10 +7,12 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 // Stores the collection name
 enum FireStoreCollection: String {
     case favourites = "favourites"
+    case users = "users"
 }
 
 // Manages requests to Google Firestore Database
@@ -19,9 +21,16 @@ class FirebaseManager {
     private let db = Firestore.firestore()
     
     
-    // Generic function to add any Encodable object to Firestore
-    func addDocument(docData: [String: Any], toCollection collection: String) async throws {
-        let collectionRef = db.collection(collection)
+    func addDocument(docData: [String: Any], toCollection collection: String, toSubCollection subCollection: String?, forUser uid: String) async throws {
+        
+        var collectionRef: CollectionReference
+
+        if let subCollectionName = subCollection {
+            collectionRef = db.collection(collection).document(uid).collection(subCollectionName)
+        }
+        else {
+            collectionRef = db.collection(collection)
+        }
         
         do {
             try await collectionRef.addDocument(data: docData)
@@ -61,6 +70,50 @@ class FirebaseManager {
             // Return the array of FavouriteHikes
             return favourites
         }
+    
+    
+    func authenticateUser(email:String, password: String) async throws {
+        try await Auth.auth().signIn(withEmail: email, password: password)
+    }
+    
+    
+    func createUser(email: String, password: String) async throws -> Bool {
+        
+        do {
+            let emailQuerySnapshot = try await Firestore.firestore().collection(FireStoreCollection.users.rawValue).whereField("email", isEqualTo: email).getDocuments()
+            
+            if(!emailQuerySnapshot.isEmpty) {
+                print("Email already exists")
+                return false
+            }
+            
+            
+            let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
+            let user = User(id: authResult.user.uid, email: email)
+            let encodedUser = try Firestore.Encoder().encode(user)
+            
+            
+            try await Firestore.firestore().collection(FireStoreCollection.users.rawValue).document(user.id).setData(encodedUser)
+            return true
+        }
+        
+        catch {
+            print("Failed to create user")
+            return false
+        }
+        
+    }
+    
+    func fetchUser(uid: String) async -> DocumentSnapshot? {
+        do {
+            let snapshot = try await Firestore.firestore().collection("users").document(uid).getDocument()
+            return snapshot
+        }
+        catch {
+            print("Error retrieving snapshot")
+            return nil
+        }
+    }
     
 }
 

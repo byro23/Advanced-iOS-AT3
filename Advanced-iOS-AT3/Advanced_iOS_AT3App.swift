@@ -39,23 +39,30 @@ struct Advanced_iOS_AT3App: App {
     // State objects for navigation and map data management.
     @StateObject private var navigationController = NavigationController()
     @StateObject private var mapViewModel = MapViewModel(context: PersistenceController.shared.container.viewContext)
+    @StateObject private var authController = AuthController()
     
     var body: some Scene {
         WindowGroup {
             // Define the main view with navigation stack.
             NavigationStack(path: $navigationController.path) {
-                UserView() // Display user view.
+                LandingView() // Display user view.
                     .navigationDestination(for: NavigationController.AppScreen.self) { screen in
                         switch screen {
+                        case .User:
+                            UserView()
                         case .HikeDetails(let hike): // Navigate to hike details.
                             HikeDetailsView(hike: hike)
+                        case .Register:
+                            RegistrationView()
                         }
+                        
                     }
             }
             // Provide Core Data context and environment objects to views.
             .environment(\.managedObjectContext, persistenceController.container.viewContext)
             .environmentObject(navigationController)
             .environmentObject(mapViewModel)
+            .environmentObject(authController)
             .preferredColorScheme(colorScheme(for: appearanceMode)) // Apply appearance mode.
         }
     }

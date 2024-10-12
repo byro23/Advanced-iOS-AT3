@@ -14,11 +14,13 @@ struct LandingView: View {
     
     var body: some View {
         VStack {
+            
             HeaderView()
             
             InputView(text: $viewModel.email, title: "Email", placeholder: "")
                 .textInputAutocapitalization(.never)
                 .keyboardType(.emailAddress)
+            
             InputView(text: $viewModel.password, title: "Password", placeholder: "", isSecuredField: true)
             
             if authController.authenticationState != .authenticating {
@@ -43,6 +45,8 @@ struct LandingView: View {
             }
             else {
                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
             }
             
                 

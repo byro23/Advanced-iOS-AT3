@@ -1,4 +1,4 @@
-# Advanced iOS AT3: Project 2 
+![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 18 19](https://github.com/user-attachments/assets/baa2786a-d88b-4bff-b61b-01d6498d92e2)# Advanced iOS AT3: Project 2 
 
 ## 'Hikes Near Me' App
 
@@ -37,7 +37,6 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Screenshot:
   - ![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 22 33](https://github.com/user-attachments/assets/4051c239-91ed-496a-b07a-992eaa2fd109)
  
- 
 - FavouritesView
   - Presents a list of the 'FavouriteHikes' stored in Core Data
   - Swipe gestures can be utilised to remove individual favourites
@@ -47,7 +46,6 @@ The last view of the app is the SettingsView, where the user can switch between 
   - ![image](https://github.com/user-attachments/assets/068cb87e-762e-4fa3-9724-e0ada675322b)
   - ![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 18 30](https://github.com/user-attachments/assets/6b790839-d77c-40de-a89c-59d5dce8f9e0)
 
-
 - SettingsView
   - A toggle which allows the user to switch between light, dark, or system themes
   - A view backup button which shows a snapshot of the favourites backup
@@ -55,7 +53,7 @@ The last view of the app is the SettingsView, where the user can switch between 
   - A delete favourites from cloud button which allows the user to remove their cloud backup
   - A logout button, taking the user back to the LandingView
   - Screenshot:
-  - ![image](https://github.com/user-attachments/assets/be04034b-974c-4ca4-a69f-5fa6d547feca)
+  - ![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 18 19](https://github.com/user-attachments/assets/f0221f64-f02e-4ddb-ba21-9018f00a775d)
  
 - LandingView
   - Provides user login, authentication provided through Google FirebaseAuth
@@ -67,11 +65,11 @@ The last view of the app is the SettingsView, where the user can switch between 
   - Account creation and detail storage achieved through Google FirebaseAuth/Firebase Firestore
   - Screenshot:
   - ![Simulator Screenshot - iPhone 16 Pro - 2024-10-13 at 10 17 34](https://github.com/user-attachments/assets/646b662c-be39-49c9-8e6d-f40c1cf0294d)
- 
 
 ## **Note**
 
-The inclusion of the Google Place sdk unfortunately breaks previews. Therefore, the simulator is the only way to view the app screens.
+- The inclusion of the Google Place sdk unfortunately breaks previews. Therefore, the simulator is the only way to view the app screens.
+- The API requests have been set to debounce with a 1 second delay. This reduces responsiveness in the loading of annotations but ensures I don't use up my free API credits.
 
 
 

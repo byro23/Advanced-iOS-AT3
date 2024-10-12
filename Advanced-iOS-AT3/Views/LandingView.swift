@@ -18,7 +18,7 @@ struct LandingView: View {
             
             InputView(text: $viewModel.email, title: "Email", placeholder: "")
                 .textInputAutocapitalization(.never)
-                //.keyboardType(.emailAddress)
+                .keyboardType(.emailAddress)
             InputView(text: $viewModel.password, title: "Password", placeholder: "", isSecuredField: true)
             
             if authController.authenticationState != .authenticating {
@@ -42,16 +42,14 @@ struct LandingView: View {
                 .disabled(!viewModel.isValid)
             }
             else {
-                ProgressView()
+               ProgressView()
             }
             
-            
-            
-            HStack {
                 
-                Button {
-                    navigationController.path.append(NavigationController.AppScreen.Register)
-                } label: {
+            Button {
+                navigationController.path.append(NavigationController.AppScreen.Register)
+            } label: {
+                HStack {
                     Text("Haven't got an account?")
                         .foregroundStyle(.gray)
                     Text("Signup")
@@ -59,12 +57,13 @@ struct LandingView: View {
                 }
             }
             .padding()
+            .alert("Invalid email and/or password. Try again.", isPresented: $viewModel.isInvalid) {
+                Button("Ok", role: .cancel) {
+                    viewModel.isInvalid = false
+                }
+            }
             
         }
-        .alert("Invalid email and/or password. Try again.", isPresented: $viewModel.isInvalid) {
-            Button("Ok", role: .cancel) {
-                viewModel.isInvalid = false
-            }
-        }
+        
     }
 }

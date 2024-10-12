@@ -73,6 +73,7 @@ struct SettingsView: View {
                     Button() {
                         authController.signOut()
                         navigationController.path.removeLast()
+                        navigationController.currentTab = .map
                     } label: {
                         Text("Signout")
                     }

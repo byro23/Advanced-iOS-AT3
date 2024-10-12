@@ -10,13 +10,15 @@ import Foundation
 @MainActor
 class BackupViewModel: ObservableObject {
     
+    // MARK: - Properties
     @Published var isLoading = false // Flag for fetching data
     @Published var favouriteHikes: [FavouriteHike] = [] // Stores the array of snapshot favourites
     
-    func fetchFavourites() async {
+    // MARK: - Functions
+    func fetchFavourites(uid: String) async {
         do {
             isLoading = true
-            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites(uid: uid)
             
             
             for document in favouritesSnapshot {

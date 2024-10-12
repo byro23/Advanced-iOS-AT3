@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+// MARK: - View
 struct InputView: View {
     @Binding var text: String
     let title: String

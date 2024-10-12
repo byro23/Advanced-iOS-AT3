@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-// Used to provide a star icon to highlight the rating of the hike
-struct StarView: View {
-    let rating: Double  // Rating of the hike, e.g., 4.5
+// MARK: - View
+struct StarView: View { // Used to provide a star icon to highlight the rating of the hike
+    let rating: Double
 
     var body: some View {
         HStack(spacing: 2) {

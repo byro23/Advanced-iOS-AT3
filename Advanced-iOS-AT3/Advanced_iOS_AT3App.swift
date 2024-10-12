@@ -50,6 +50,7 @@ struct Advanced_iOS_AT3App: App {
                         switch screen {
                         case .User:
                             UserView()
+                                .navigationBarBackButtonHidden()
                         case .HikeDetails(let hike): // Navigate to hike details.
                             HikeDetailsView(hike: hike)
                         case .Register:

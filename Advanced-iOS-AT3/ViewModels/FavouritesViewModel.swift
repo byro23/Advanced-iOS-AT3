@@ -13,6 +13,7 @@ import FirebaseFirestore
 
 class FavouritesViewModel: ObservableObject {
     
+    // MARK: - Properties
     private let placesClient = GMSPlacesClient.shared() // Initialize the GMSPlacesClient
     @Published var isLoading = false
     @Published var tappedFavourite = false
@@ -69,6 +70,7 @@ class FavouritesViewModel: ObservableObject {
         }
     }
     
+    // Deletes the local copy of the favourites
     func deleteAllFavourites(context: NSManagedObjectContext) {
         // Create a fetch request to get all FavouriteHikes
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavouriteHikes.fetchRequest()
@@ -92,14 +94,14 @@ class FavouritesViewModel: ObservableObject {
         }
     }
     
-    @MainActor
+    @MainActor // Backs the favouritesup to the cloud database
     func backupFavourites(context: NSManagedObjectContext, uid: String) async {
         isBackingUp = true
         
         let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
         
         do {
-            try await FirebaseManager.shared.deleteCollection(FireStoreCollection.favourites.rawValue) // Delete old backup
+            await FirebaseManager.shared.deleteFavourites(uid: uid) // Delete old backup
             
             let favouriteHikes = try context.fetch(fetchRequest)
             

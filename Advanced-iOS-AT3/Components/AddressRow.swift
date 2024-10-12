@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// Used to show the address results as part of the search auto-complete
-struct AddressRow: View {
+// MARK: - View
+struct AddressRow: View { // Used to show the address results as part of the search auto-complete
     let address: AddressResult
         
     var body: some View {

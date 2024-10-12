@@ -20,7 +20,7 @@ class Hike: NSObject, MKAnnotation, Identifiable {
     let userRatingsTotal: Int
     let imageURL: URL?
     let title: String?
-    let coordinate: CLLocationCoordinate2D
+    let coordinate: CLLocationCoordinate2D // Requires Google Places
     var isFavourite: Bool = false
     
     // Initialiser

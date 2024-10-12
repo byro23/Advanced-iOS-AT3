@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// Provides the hikes near me logo and name
-struct HeaderView: View {
+// MARK: - View 
+struct HeaderView: View { // Provides the hikes near me logo and name
     var body: some View {
         HStack {
             

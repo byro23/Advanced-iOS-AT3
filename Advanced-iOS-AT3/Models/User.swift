@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Lightweight user model. Used to track favourites between different users.
 struct User: Identifiable, Codable {
     let id: String
     var email: String

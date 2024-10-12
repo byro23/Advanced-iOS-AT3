@@ -117,7 +117,7 @@ struct MapView: View {
                 }
             }
         }
-        .onChange(of: viewModel.region) { newValue in
+        .onChange(of: viewModel.region) {
             debouncer.debounce(delay: 1) { // Debounce API calls with a 1-second delay.
                 print("Calling API \n")
                 viewModel.fetchNearbyHikesByTextSearch() // Fetch nearby hikes when the region changes.
@@ -131,7 +131,7 @@ struct MapView: View {
 }
 
 // Extension to compare MKCoordinateRegion objects.
-extension MKCoordinateRegion: Equatable {
+extension MKCoordinateRegion: @retroactive Equatable {
     public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
         lhs.center.latitude == rhs.center.latitude && lhs.center.longitude == rhs.center.longitude
     }

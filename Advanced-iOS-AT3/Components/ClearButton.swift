@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// Clear button to quickly clear textfield
-struct ClearButton: View {
+// MARK: - View
+struct ClearButton: View { // Clear button to quickly clear textfield
     
     @Binding var text: String
     

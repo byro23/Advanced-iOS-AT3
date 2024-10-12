@@ -11,6 +11,7 @@ struct BackupView: View {
     @Binding var showSheet: Bool
     
     @StateObject var viewModel: BackupViewModel = BackupViewModel()
+    @EnvironmentObject var authController: AuthController
     
     
     
@@ -35,7 +36,7 @@ struct BackupView: View {
             .navigationTitle("Favourites Backup")
             .onAppear {
                 Task {
-                    await viewModel.fetchFavourites()
+                    await viewModel.fetchFavourites(uid: authController.currentUser?.id ?? "")
                 }
                 
             }

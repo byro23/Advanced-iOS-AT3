@@ -15,12 +15,14 @@ enum FireStoreCollection: String {
     case users = "users"
 }
 
-// Manages requests to Google Firestore Database
-class FirebaseManager {
+
+class FirebaseManager { // Manages requests to Google Firestore Database
+    // MARK: - Properties
     static let shared = FirebaseManager()
     private let db = Firestore.firestore()
     
-    
+    // MARK: - Functions
+    // Add document to collection or subcollection based on userId
     func addDocument(docData: [String: Any], toCollection collection: String, toSubCollection subCollection: String?, forUser uid: String) async throws {
         
         var collectionRef: CollectionReference
@@ -36,28 +38,37 @@ class FirebaseManager {
             try await collectionRef.addDocument(data: docData)
         }
         catch {
-            try await deleteCollection(collection)
+            await deleteFavourites(uid: uid)
         }
         
     }
     
-    func deleteCollection(_ collectionRef: String) async throws {
+    
+    // Deletes the user's favourites cloud backup
+    func deleteFavourites(uid: String) async {
         // Get all documents in the collection
-        let collectionRef = db.collection(collectionRef)
-        let documents = try await collectionRef.getDocuments()
-
-        // Iterate through each document and delete it
-        for document in documents.documents {
-            try await document.reference.delete()
+        let collectionRef = db.collection(FireStoreCollection.users.rawValue).document(uid).collection(FireStoreCollection.favourites.rawValue)
+        
+        do {
+            let documents = try await collectionRef.getDocuments()
+            
+            // Iterate through each document and delete it
+            for document in documents.documents {
+                try await document.reference.delete()
+            }
         }
+        catch {
+            print("Error: \(error.localizedDescription)")
+        }
+        
         
     }
     
     
     // Function to fetch documents from the "favourites" collection
-    func fetchFavourites() async throws -> [[String: Any]] {
+    func fetchFavourites(uid: String) async throws -> [[String: Any]] {
             // Reference to the "favourites" collection
-            let collectionRef = db.collection("favourites")
+        let collectionRef = db.collection(FireStoreCollection.users.rawValue).document(uid).collection(FireStoreCollection.favourites.rawValue)
             
             // Fetch the documents in the collection
             let querySnapshot = try await collectionRef.getDocuments()
@@ -71,12 +82,12 @@ class FirebaseManager {
             return favourites
         }
     
-    
+    // Authenticates the user using FirebaseAuth
     func authenticateUser(email:String, password: String) async throws {
         try await Auth.auth().signIn(withEmail: email, password: password)
     }
     
-    
+    // Adds user to database
     func createUser(email: String, password: String) async throws -> Bool {
         
         do {
@@ -104,6 +115,7 @@ class FirebaseManager {
         
     }
     
+    // Fetches the user information from the database
     func fetchUser(uid: String) async -> DocumentSnapshot? {
         do {
             let snapshot = try await Firestore.firestore().collection("users").document(uid).getDocument()

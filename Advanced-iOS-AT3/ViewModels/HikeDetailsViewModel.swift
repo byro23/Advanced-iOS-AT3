@@ -13,6 +13,7 @@ import CoreData
 @MainActor
 class HikeDetailsViewModel: ObservableObject {
     
+    // MARK: - Properties
     @Published var hike: Hike
     @Published var hikeImage: UIImage?
     @Published var isFavourite: Bool = false
@@ -23,11 +24,10 @@ class HikeDetailsViewModel: ObservableObject {
         self.hike = hike
     }
     
+    // MARK: - Functions
     func loadHikePhoto() {
         loadingImage = true
         let placeId = hike.placeId
-        
-        print(hike.title)
         
         let placesClient = GMSPlacesClient.shared()
 

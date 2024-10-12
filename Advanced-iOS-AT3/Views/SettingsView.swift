@@ -12,6 +12,8 @@ struct SettingsView: View {
     // Retrieve appearance mode from AppStorage and manage it within the app.
     @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
     @Environment(\.managedObjectContext) private var viewContext // Core Data context for data operations.
+    @EnvironmentObject var authController: AuthController
+    @EnvironmentObject var navigationController: NavigationController
     @StateObject var viewModel = SettingsViewModel() // View model to handle settings logic.
     
     var body: some View {
@@ -32,7 +34,7 @@ struct SettingsView: View {
                     // Button to check and view backup.
                     Button() {
                         Task {
-                            let proceed = await viewModel.checkForBackup()
+                            let proceed = await viewModel.checkForBackup(uid: authController.currentUser?.id ?? "")
                             if proceed {
                                 viewModel.showSheet = true
                             }
@@ -67,6 +69,18 @@ struct SettingsView: View {
                     Text("Backup")
                 }
                 
+                Section {
+                    Button() {
+                        authController.signOut()
+                        navigationController.path.removeLast()
+                    } label: {
+                        Text("Signout")
+                    }
+                }
+                header: {
+                    Text("Signout")
+                }
+                
                 // Show loading indicator if a task is in progress.
                 if(viewModel.isLoading) {
                     ProgressView()
@@ -86,7 +100,7 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {}
             Button("Confirm") {
                 Task {
-                    await viewModel.restoreBackup(context: viewContext)
+                    await viewModel.restoreBackup(context: viewContext, uid: authController.currentUser?.id ?? "")
                 }
             }
         }
@@ -96,7 +110,7 @@ struct SettingsView: View {
             Button("Cancel", role: .cancel) {}
             Button("Confirm") {
                 Task {
-                    await viewModel.deleteBackup()
+                    await viewModel.deleteBackup(uid: authController.currentUser?.id ?? "")
                 }
             }
         }

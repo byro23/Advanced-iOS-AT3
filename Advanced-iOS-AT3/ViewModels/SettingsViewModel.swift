@@ -29,9 +29,9 @@ class SettingsViewModel: ObservableObject {
         "No backup exists."
     ]
     
-    func checkForBackup() async -> Bool {
+    func checkForBackup(uid: String) async -> Bool {
         do {
-            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites(uid: uid)
             
             if favouritesSnapshot.isEmpty {
                 noBackup = true
@@ -52,13 +52,13 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    func restoreBackup(context: NSManagedObjectContext) async {
+    func restoreBackup(context: NSManagedObjectContext, uid: String) async {
         statusMessage = ""
         
         isLoading = true
         isSuccessful = false
         do {
-            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites(uid: uid)
             
             if favouritesSnapshot.isEmpty {
                 isLoading = false
@@ -107,12 +107,12 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    func deleteBackup() async {
+    func deleteBackup(uid: String) async {
         statusMessage = ""
         isSuccessful = false
         isLoading = true
         do {
-            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites()
+            let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites(uid: uid)
             
             if(favouritesSnapshot.isEmpty) {
                 isLoading = false
@@ -121,7 +121,7 @@ class SettingsViewModel: ObservableObject {
                 return
             }
             
-            try await FirebaseManager.shared.deleteCollection(FireStoreCollection.favourites.rawValue)
+            await FirebaseManager.shared.deleteFavourites(uid: uid)
             isLoading = false
             isSuccessful = true
             statusMessage = statusMessages[4]

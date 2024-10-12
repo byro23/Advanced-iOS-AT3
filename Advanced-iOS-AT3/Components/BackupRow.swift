@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-// The view component of the favourite snapshot rows
-struct BackupRow: View {
+// MARK: - View
+struct BackupRow: View { // The view component of the favourite backup rows
+    // MARK: - Properties
     var favourite: FavouriteHike
     
     var body: some View {

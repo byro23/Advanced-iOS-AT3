@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-// Provides the presentation of the rows in favourite hikes list
-struct HikeRow: View {
+// MARK: - View
+struct HikeRow: View { // Provides the presentation of the rows in favourite hikes list
+    // MARK: - Properties
     var hike: FavouriteHikes
     
     var body: some View {

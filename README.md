@@ -36,7 +36,9 @@ To add the API key to the project:
 ### Signing into the app
 
 Please create an account by clicking the sign up button on the LandingView or by using the following test credentials: 
+
 Username: `test@mail.com` 
+
 Password: `password`
 
 ## Description

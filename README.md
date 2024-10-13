@@ -33,6 +33,11 @@ To add the API key to the project:
 
 ![image](https://github.com/user-attachments/assets/2ff7547b-2d05-44ae-8afe-e7ee20900157)
 
+### Signing into the app
+
+Please create an account by clicking the sign up button on the root view or by using the following test credentials: 
+Username: `test@mail.com` 
+Password: `password`
 
 ## Description
 

@@ -4,13 +4,35 @@
 
 ## Github Repository Link: https://github.com/byro23/Advanced-iOS-AT3
 
-## Package Dependences
+## Instructions
+
+### Package Dependences
 
 All package dependencies should automatically install upon after cloning the repository.
 If the dependencies do not install, please use the Swift Package Manager to install the following:
 
 - Google Places SDK For iOS Swift ``` https://github.com/googlemaps/ios-places-sdk ```
 - Firebase iOS SDK ``` https://github.com/firebase/firebase-ios-sdk ``` (With FirebaseFirestore & FirebaseAuth added to target)
+
+### API Key
+For safety, the Google Places API key is not included in the project's code and will need to be added manually. 
+
+The **api key** will be provided through the submission comments on **Canvas**.
+
+**It is crucial the API key is added, otherwise the map will not show the hike annotations**.
+
+To add the API key to the project:
+
+1. Copy the API key from the Canvas comments.
+2. Inside Xcode go to the top menubar and select `Product` -> `Scheme` -> `Edit Scheme`
+3. Select `Run` along the left handside
+4. Select `environment variables`
+5. Paste the API key as the value for `PLACES_API_KEY`
+
+#### API Key Location
+
+![image](https://github.com/user-attachments/assets/2ff7547b-2d05-44ae-8afe-e7ee20900157)
+
 
 ## Description
 

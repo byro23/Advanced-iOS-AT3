@@ -19,15 +19,15 @@ For safety, the Google Places API key is not included in the project's code and 
 
 The **api key** will be provided through the submission comments on **Canvas**.
 
-**It is crucial the API key is added, otherwise the map will not show the hike annotations**.
+***It is crucial the API key is added, otherwise the map will not show the hike annotations***.
 
 To add the API key to the project:
 
 1. Copy the API key from the Canvas comments.
-2. Inside Xcode go to the top menubar and select `Product` -> `Scheme` -> `Edit Scheme`
-3. Select `Run` along the left handside
-4. Select `environment variables`
-5. Paste the API key as the value for `PLACES_API_KEY`
+2. With the project loaded in Xcode go to the top menubar and select `Product` -> `Scheme` -> `Edit Scheme`.
+3. Select `Run` along the left handside.
+4. Select `arguments` along the top.
+5. Paste the API key as the value for `PLACES_API_KEY`.
 
 #### API Key Location
 

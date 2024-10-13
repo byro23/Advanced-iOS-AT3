@@ -23,7 +23,7 @@ The **api key** will be provided through the submission comments on **Canvas**.
 
 To add the API key to the project:
 
-1. Copy the API key from the Canvas comments.
+1. Copy the API key from the Canvas submission comments.
 2. With the project loaded in Xcode go to the top menubar and select `Product` -> `Scheme` -> `Edit Scheme`.
 3. Select `Run` along the left handside.
 4. Select `arguments` along the top.

@@ -125,7 +125,8 @@ struct MapView: View {
         }
         .onAppear {
             locationManager.checkAuthorizationStatus() // Check location authorization on view load.
-            viewModel.fetchNearbyHikesByTextSearch() // Fetch initial nearby hikes.
+            viewModel.fetchNearbyHikesByTextSearch()
+            // Fetch initial nearby hikes.
         }
     }
 }

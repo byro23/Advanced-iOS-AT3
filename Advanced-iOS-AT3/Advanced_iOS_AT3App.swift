@@ -14,11 +14,13 @@ import GooglePlaces
 // AppDelegate handles app initialization, such as Firebase and Google Places API configuration.
 class AppDelegate: NSObject, UIApplicationDelegate {
     
+    let placesAPIValue = ProcessInfo.processInfo.environment["PLACES_API_KEY"]
+    
     // Configure Firebase and Google Places API on app launch.
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure() // Initialize Firebase services.
-        GMSPlacesClient.provideAPIKey("AIzaSyDI99P3GEoDHLv8mXYFMeAoMIH8yLi6w4I")
+        GMSPlacesClient.provideAPIKey(placesAPIValue ?? "")
         
         return true
     }

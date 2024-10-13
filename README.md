@@ -24,7 +24,7 @@ The **api key** will be provided through the submission comments on **Canvas**.
 To add the API key to the project:
 
 1. Copy the API key from the Canvas comments.
-2. Inside Xcode go to the top menubar and select `Product` -> `Scheme` -> `Edit Scheme`
+2. With the project loaded in Xcode go to the top menubar and select `Product` -> `Scheme` -> `Edit Scheme`
 3. Select `Run` along the left handside
 4. Select `environment variables`
 5. Paste the API key as the value for `PLACES_API_KEY`

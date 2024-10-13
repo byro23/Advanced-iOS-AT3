@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-@MainActor
+@MainActor // MARK: - SettingsViewModel
 class SettingsViewModel: ObservableObject {
     @Published var tappedRestore: Bool = false
     @Published var tappedDelete: Bool = false
@@ -20,6 +20,7 @@ class SettingsViewModel: ObservableObject {
     @Published var isSuccessful = false
     @Published var statusMessage = ""
     
+    // The various potential status messages
     var statusMessages: [String] = [
         "Restore successful ✅",
         "Error restoring backup. Try again.",
@@ -29,6 +30,7 @@ class SettingsViewModel: ObservableObject {
         "No backup exists."
     ]
     
+    // Checks for an existing cloud backup
     func checkForBackup(uid: String) async -> Bool {
         do {
             let favouritesSnapshot = try await FirebaseManager.shared.fetchFavourites(uid: uid)
@@ -46,12 +48,14 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
+    // Removes the status message after three seconds
     private func removeStatusAfterDelay() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             self.statusMessage = ""
         }
     }
     
+    // Retrieves cloud backup and loads into favourites
     func restoreBackup(context: NSManagedObjectContext, uid: String) async {
         statusMessage = ""
         
@@ -107,6 +111,7 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
+    // Deletes backup from remote database
     func deleteBackup(uid: String) async {
         statusMessage = ""
         isSuccessful = false

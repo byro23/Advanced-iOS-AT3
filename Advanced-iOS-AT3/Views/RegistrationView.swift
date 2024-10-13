@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+// MARK: - RegistrationView
 struct RegistrationView: View {
+    
+    // MARK: - Properties
     @EnvironmentObject var authController: AuthController
     @EnvironmentObject var navigationController: NavigationController
     @StateObject var viewModel = RegistrationViewModel()
     
+    // MARK: - View
     var body: some View {
         NavigationView {
             VStack {

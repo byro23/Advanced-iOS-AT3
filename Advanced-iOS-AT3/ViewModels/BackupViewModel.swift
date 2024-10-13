@@ -7,7 +7,7 @@
 
 import Foundation
 
-@MainActor
+@MainActor // MARK: - BackupViewModel
 class BackupViewModel: ObservableObject {
     
     // MARK: - Properties

@@ -2,9 +2,9 @@ import Foundation
 import CoreLocation
 import MapKit
 
-class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+// MARK: - Location Manager
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate { // Used to manage user location if permitted
     
-    // Ultimo Coordinates: -33.87978316775921, 151.19853677853445
     @Published var lastKnownLocation: CLLocationCoordinate2D?
     @Published var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: -33.87978316775921, longitude: 151.19853677853445), // Default to Sydney
@@ -12,14 +12,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     )
     
     var manager = CLLocationManager()
-    
-    // Lazy initialization for CLLocationManager
-    /*private lazy var manager: CLLocationManager = {
-        let manager = CLLocationManager()
-        manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        return manager
-    }() */
     
     // Check location authorization status and start updating location
     func checkAuthorizationStatus() {

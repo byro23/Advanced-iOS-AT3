@@ -6,16 +6,17 @@
 
 import SwiftUI
 
-// View for managing app settings such as appearance and backups.
-struct SettingsView: View {
+// MARK: - SettingsView
+struct SettingsView: View { // View for managing app settings such as appearance and backups.
     
-    // Retrieve appearance mode from AppStorage and manage it within the app.
-    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system
+    // MARK: - Properties
+    @AppStorage("appearanceMode") private var appearanceMode: AppearanceMode = .system // Retrieve appearance mode from AppStorage and manage it within the app.
     @Environment(\.managedObjectContext) private var viewContext // Core Data context for data operations.
     @EnvironmentObject var authController: AuthController
     @EnvironmentObject var navigationController: NavigationController
     @StateObject var viewModel = SettingsViewModel() // View model to handle settings logic.
     
+    // MARK: - Body
     var body: some View {
         VStack(alignment: .leading) {
             Form {
@@ -139,7 +140,7 @@ enum AppearanceMode: String, CaseIterable, Identifiable {
    var id: String { rawValue }
 }
 
-// Preview for testing SettingsView.
+// MARK: - Preview
 #Preview {
     SettingsView()
 }

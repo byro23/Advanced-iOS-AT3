@@ -6,10 +6,12 @@
 
 import SwiftUI
 
-// Main user interface view containing a TabView for navigating between Map, Favourites, and Settings.
-struct UserView: View {
+// MARK: - UserView
+struct UserView: View { // Main user interface view containing a TabView for navigating between Map, Favourites, and Settings.
+    // MARK: - Properties
     @EnvironmentObject var navigationController: NavigationController // Access the navigation controller for handling tab selection.
     
+    // MARK: - Body
     var body: some View {
         // A TabView for navigating between different app sections.
         TabView(selection: $navigationController.currentTab) {
@@ -34,7 +36,7 @@ struct UserView: View {
     }
 }
 
-// Preview for testing the UserView with a mock environment object.
+// MARK: - Preview
 #Preview {
     UserView()
         .environmentObject(NavigationController()) // Provide a mock NavigationController for the preview.

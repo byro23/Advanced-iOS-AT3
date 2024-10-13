@@ -7,9 +7,10 @@
 import SwiftUI
 import MapKit
 
-// View for displaying and interacting with a map, allowing users to search for hikes and view hike locations.
-struct MapView: View {
+// MARK: - MapView
+struct MapView: View { // View for displaying and interacting with a map, allowing users to search for hikes and view hike locations.
     
+    // MARK: - Properties
     @EnvironmentObject private var viewModel: MapViewModel // View model for managing map data and search logic.
     @StateObject private var locationManager = LocationManager() // Manage location authorization and updates.
     @FocusState private var isFocusedTextField: Bool // Track focus state of the search text field.
@@ -18,6 +19,7 @@ struct MapView: View {
     @EnvironmentObject var navigationController: NavigationController // Handle navigation between views.
     @StateObject private var debouncer = Debouncer() // Handle debouncing for API requests
     
+    // MARK: - View
     var body: some View {
         
         ZStack {
@@ -128,13 +130,6 @@ struct MapView: View {
             viewModel.fetchNearbyHikesByTextSearch()
             // Fetch initial nearby hikes.
         }
-    }
-}
-
-// Extension to compare MKCoordinateRegion objects.
-extension MKCoordinateRegion: @retroactive Equatable {
-    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
-        lhs.center.latitude == rhs.center.latitude && lhs.center.longitude == rhs.center.longitude
     }
 }
 

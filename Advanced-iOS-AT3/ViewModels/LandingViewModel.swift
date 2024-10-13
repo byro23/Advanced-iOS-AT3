@@ -7,7 +7,7 @@
 
 import Foundation
 
-
+// Stores the properties and validation logic required to login
 class LandingViewModel: ObservableObject {
     
     @Published var email = ""

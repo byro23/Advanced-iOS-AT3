@@ -24,6 +24,7 @@ struct HeaderView: View { // Provides the hikes near me logo and name
     }
 }
 
+// MARK: - Preview
 #Preview {
     HeaderView()
 }

@@ -7,14 +7,15 @@
 
 import SwiftUI
 
+// MARK: - BackupView
 struct BackupView: View {
-    @Binding var showSheet: Bool
     
+    // MARK: - Properties
+    @Binding var showSheet: Bool
     @StateObject var viewModel: BackupViewModel = BackupViewModel()
     @EnvironmentObject var authController: AuthController
     
-    
-    
+    // MARK: - View
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {

@@ -7,22 +7,28 @@
 
 import SwiftUI
 
+// MARK: - LandingView
 struct LandingView: View {
+    // MARK: - Properties
     @EnvironmentObject var authController : AuthController
     @EnvironmentObject var navigationController : NavigationController
     @StateObject var viewModel = LandingViewModel()
     
+    // MARK: - View
     var body: some View {
         VStack {
             
             HeaderView()
             
+            // Email Input
             InputView(text: $viewModel.email, title: "Email", placeholder: "")
                 .textInputAutocapitalization(.never)
                 .keyboardType(.emailAddress)
             
+            // Password input
             InputView(text: $viewModel.password, title: "Password", placeholder: "", isSecuredField: true)
             
+            // Check if authController is authenticating user
             if authController.authenticationState != .authenticating {
                 Button {
                     Task {
@@ -49,7 +55,7 @@ struct LandingView: View {
                     .scaleEffect(1.5)
             }
             
-                
+            // Button to RegistrationView
             Button {
                 navigationController.path.append(NavigationController.AppScreen.Register)
             } label: {

@@ -15,7 +15,7 @@ enum FireStoreCollection: String {
     case users = "users"
 }
 
-
+// MARK: - Firebase Manager
 class FirebaseManager { // Manages requests to Google Firestore Database
     // MARK: - Properties
     static let shared = FirebaseManager()
@@ -43,7 +43,6 @@ class FirebaseManager { // Manages requests to Google Firestore Database
         
     }
     
-    
     // Deletes the user's favourites cloud backup
     func deleteFavourites(uid: String) async {
         // Get all documents in the collection
@@ -63,7 +62,6 @@ class FirebaseManager { // Manages requests to Google Firestore Database
         
         
     }
-    
     
     // Function to fetch documents from the "favourites" collection
     func fetchFavourites(uid: String) async throws -> [[String: Any]] {

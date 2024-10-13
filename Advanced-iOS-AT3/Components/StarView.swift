@@ -47,7 +47,7 @@ struct StarView: View { // Used to provide a star icon to highlight the rating o
     }
 }
 
-
+// MARK: - Preview
 #Preview {
     StarView(rating: 3.5)
 }

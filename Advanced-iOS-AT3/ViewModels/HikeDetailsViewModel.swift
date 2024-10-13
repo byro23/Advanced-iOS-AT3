@@ -25,69 +25,19 @@ class HikeDetailsViewModel: ObservableObject {
     }
     
     // MARK: - Functions
-    func loadHikePhoto() {
-        loadingImage = true
-        let placeId = hike.placeId
-        
-        let placesClient = GMSPlacesClient.shared()
 
-        placesClient.lookUpPhotos(forPlaceID: placeId ?? "") { (photos, error) in
-            if let error = error {
-                print("Error looking up photos: \(error.localizedDescription)")
-                self.loadingImage = false
-                return
-            }
-
-            guard let photoMetadata = photos?.results.first else {
-                print("No photo metadata found for place: \(placeId ?? "Unknown")")
-                self.loadingImage = false
-                return
-            }
-
-            print("Photo metadata: \(photoMetadata)")
-            
-
-            // Request individual photos in the response list
-            let fetchPhotoRequest = GMSFetchPhotoRequest(photoMetadata: photoMetadata, maxSize: CGSizeMake(512, 512))
-            placesClient.fetchPhoto(with: fetchPhotoRequest) { (photoImage, error) in
-                if let error = error {
-                    print("Error fetching photo: \(error.localizedDescription)")
-                    
-                    if let nsError = error as NSError? {
-                        print("Detailed error info: \(nsError)")
-                        print("Error code: \(nsError.code), domain: \(nsError.domain)")
-                    }
-                    
-                    self.loadingImage = false
-                    return
-                }
-
-                guard let photoImage = photoImage else {
-                    print("No photo returned from fetchPhoto")
-                    self.loadingImage = false
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    self.hikeImage = photoImage
-                    self.loadingImage = false
-                }
-                print("Successfully fetched and displayed photo.")
-            }
-        }
-    }
-
-
-    
+    // Adds favourite by saving to core data
     func addToFavourites(context: NSManagedObjectContext) {
         // Check if the hike is already a favorite
-       
+        
+        // Check if place is already a favourites (should never occur)
         let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "placeId == %@", hike.placeId ?? "")
         
         do {
             let results = try context.fetch(fetchRequest)
             
+            // If place does not already exist as favourite, add to core data
             if results.isEmpty {
                 let newFavouriteHike = FavouriteHikes(context: context)
                 newFavouriteHike.placeId = hike.placeId
@@ -113,6 +63,7 @@ class HikeDetailsViewModel: ObservableObject {
         
     }
     
+    // Removes favourite from core data
     func removeFromFavourite(context: NSManagedObjectContext) {
         let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "placeId == %@", hike.placeId ?? "")
@@ -140,22 +91,22 @@ class HikeDetailsViewModel: ObservableObject {
     }
 
     
-func checkIfFavourite(context: NSManagedObjectContext) {
-        let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
-        fetchRequest.predicate = NSPredicate(format: "placeId == %@", hike.placeId ?? "")
-        
-        do {
-            let results = try context.fetch(fetchRequest)
-            if(results.isEmpty) {
-                isFavourite = false
+    func checkIfFavourite(context: NSManagedObjectContext) {
+            let fetchRequest: NSFetchRequest<FavouriteHikes> = FavouriteHikes.fetchRequest()
+            fetchRequest.predicate = NSPredicate(format: "placeId == %@", hike.placeId ?? "")
+            
+            do {
+                let results = try context.fetch(fetchRequest)
+                if(results.isEmpty) {
+                    isFavourite = false
+                }
+                else {
+                    isFavourite = true
+                }
             }
-            else {
-                isFavourite = true
+            catch {
+                print("Error: \(error.localizedDescription)")
             }
         }
-        catch {
-            print("Error: \(error.localizedDescription)")
-        }
-    }
     
 }

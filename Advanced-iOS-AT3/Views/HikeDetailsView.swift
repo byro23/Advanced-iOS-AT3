@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: - HikeDetailsView
 struct HikeDetailsView: View {
     @Environment(\.managedObjectContext) var viewContext
     @StateObject var viewModel: HikeDetailsViewModel
@@ -15,6 +16,7 @@ struct HikeDetailsView: View {
         _viewModel = StateObject(wrappedValue: HikeDetailsViewModel(hike: hike))
     }
     
+    // MARK: View
     var body: some View {
         VStack{
             
@@ -86,12 +88,12 @@ struct HikeDetailsView: View {
         }
         .onAppear {
             viewModel.checkIfFavourite(context: viewContext)
-            viewModel.loadHikePhoto()
         }
         
     }
 }
 
+// MARK: - Preview
 #Preview {
     HikeDetailsView(hike: Hike.mock_hike)
 }

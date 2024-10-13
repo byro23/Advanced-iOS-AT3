@@ -10,7 +10,8 @@ import SwiftUI
 // MARK: - View
 struct AddressRow: View { // Used to show the address results as part of the search auto-complete
     let address: AddressResult
-        
+    
+    // MARK: - View
     var body: some View {
         NavigationLink {
             MapView()
@@ -25,6 +26,7 @@ struct AddressRow: View { // Used to show the address results as part of the sea
     }
 }
 
+// MARK: - Preview
 #Preview {
     AddressRow(address: AddressResult.MOCK_ADDRESS)
 }

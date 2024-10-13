@@ -34,6 +34,7 @@ struct InputView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     InputView(text: .constant(""), title: "Email Address", placeholder: "emailhere@domain.com", isSecuredField: false)
 }

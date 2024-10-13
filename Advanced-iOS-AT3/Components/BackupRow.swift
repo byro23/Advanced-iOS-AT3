@@ -12,6 +12,7 @@ struct BackupRow: View { // The view component of the favourite backup rows
     // MARK: - Properties
     var favourite: FavouriteHike
     
+    // MARK: - Body
     var body: some View {
         VStack(alignment: .leading) {
             Text(favourite.placeName)

@@ -11,6 +11,7 @@ import CoreLocation
 import CoreData
 import FirebaseFirestore
 
+// MARK: - FavouritesViewModel
 class FavouritesViewModel: ObservableObject {
     
     // MARK: - Properties
@@ -23,6 +24,7 @@ class FavouritesViewModel: ObservableObject {
     @Published var backupSuccessful: Bool = false
     @Published var backupFailed: Bool = false
     
+    // MARK: - Functions
     // Function to fetch place details and return a Hike object
     @MainActor
     func fetchPlace(placeId: String) async -> Hike? {

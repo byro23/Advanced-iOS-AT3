@@ -4,31 +4,30 @@ import MapKit
 import Combine
 import GooglePlaces
 
+@MainActor // MARK: MapViewModel
 class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
     
+    // MARK: - Properties
     @Published var annotations: [Hike] = [] // Stores the annotation information
     @Published var region: MKCoordinateRegion = MKCoordinateRegion(
         center: defaultRegion, span: MKCoordinateSpan(latitudeDelta: 0.4, longitudeDelta: 0.4)
     )
-    
-    // Ultimo Area
-    private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
-        
     @Published var searchableText: String = ""
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var nearbyHikeResults: [GMSPlace] = []
+    
     var fetchingSuggestions: Bool = false
     var isZoomedIn: Bool = true
-    
     private var cancellable: AnyCancellable?
     private var searchCompleter = MKLocalSearchCompleter()
-    
     private let context: NSManagedObjectContext
+    private static let defaultRegion = CLLocationCoordinate2D(latitude: -33.8688, longitude: 151.2093)
     
     var isSearching: Bool {
         return !searchableText.isEmpty
     }
     
+    // MARK: - Initialiser
     init(context: NSManagedObjectContext) {
         self.context = context
         super.init() // Initialize the superclass (NSObject)
@@ -68,6 +67,7 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         
     }
     
+    // MARK: - Functions
     // Takes the user to the searched/suggested location
     func selectLocation(for suggestion: MKLocalSearchCompletion,  context: NSManagedObjectContext) {
         let searchRequest = MKLocalSearch.Request(completion: suggestion)
@@ -86,7 +86,6 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         }
     }
     
-    @MainActor
     func fetchNearbyHikesByTextSearch() { // Fetches the places (importantly the coordinates) through the Google Places API
         
         var searchRadius: Double
@@ -232,4 +231,12 @@ class MapViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
         print("Error occurred during search completion: \(error.localizedDescription)")
     }
     
+}
+
+// MARK: - Extension
+// Extension to compare MKCoordinateRegion objects.
+extension MKCoordinateRegion: @retroactive Equatable {
+    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
+        lhs.center.latitude == rhs.center.latitude && lhs.center.longitude == rhs.center.longitude
+    }
 }

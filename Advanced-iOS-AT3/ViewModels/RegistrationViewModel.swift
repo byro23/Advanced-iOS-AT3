@@ -7,8 +7,10 @@
 
 import Foundation
 
-
+// MARK: - RegistrationView Model
 class RegistrationViewModel: ObservableObject {
+    
+    // MARK: - Properties
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""

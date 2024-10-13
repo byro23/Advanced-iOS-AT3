@@ -26,7 +26,8 @@ class AuthController: ObservableObject { // This class is used to manage the use
     @Published var emailAlreadyExists: Bool = false
     
     // MARK: - Functions
-    // Sign in the user
+    
+    // Authenticates the user
     func signIn(email: String, password: String) async {
         do {
             authenticationState = .authenticating

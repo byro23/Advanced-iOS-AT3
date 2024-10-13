@@ -8,13 +8,16 @@
 import SwiftUI
 import MapKit
 
+// MARK: - FavouritesView
 struct FavouritesView: View {
+    // MARK: - Properties
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var navigationController: NavigationController
     @EnvironmentObject var mapViewModel: MapViewModel
     @EnvironmentObject var authController: AuthController
     @StateObject var viewModel = FavouritesViewModel()
     @State var selectedHike: FavouriteHikes?
+    
     // Use @FetchRequest to fetch FavouriteHikes from Core Data
    @FetchRequest(
        entity: FavouriteHikes.entity(), // Entity to fetch
@@ -22,7 +25,7 @@ struct FavouritesView: View {
        animation: .default
    ) private var favouriteHikes: FetchedResults<FavouriteHikes>
     
-    
+    // MARK: - View
     var body: some View {
         NavigationView {
             VStack {
@@ -66,10 +69,6 @@ struct FavouritesView: View {
                         .foregroundStyle(.red)
                 }
                 
-                
-                
-                
-                
                 if(favouriteHikes.isEmpty) {
                     Text("No favourites.")
                         .font(.headline)
@@ -80,6 +79,7 @@ struct FavouritesView: View {
                     Spacer()
                 }
                 else {
+                    // Favourites list
                     List {
                         ForEach(favouriteHikes) { hike in
                             HikeRow(hike: hike)
@@ -94,6 +94,7 @@ struct FavouritesView: View {
             }
             .navigationTitle("Favourites")
             .confirmationDialog("Choose an option", isPresented: $viewModel.tappedFavourite) {
+                // Takes user to hike position on map
                 Button("Show on map") {
                     if let hike = selectedHike {
                         print("Saved hike latitude: \(hike.latitude). Saved hike longitude: \(hike.longitude)")
@@ -104,7 +105,7 @@ struct FavouritesView: View {
                         navigationController.currentTab = .map
                     }
                 }
-                
+                // Takes user to HikeDetailsView for respective hike
                 Button("Show hike details") {
                     Task {
                         if let hike = await viewModel.fetchPlace(placeId: selectedHike?.placeId ?? "") {
@@ -151,6 +152,7 @@ struct FavouritesView: View {
         
     }
     
+    // Logic when the user deletes a favourite using the list swipe
     private func deleteItem(offsets: IndexSet) {
         withAnimation {
             offsets.map { favouriteHikes[$0] }.forEach(viewContext.delete)

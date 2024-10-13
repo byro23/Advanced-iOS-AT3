@@ -10,8 +10,10 @@ import SwiftUI
 // MARK: - View
 struct ClearButton: View { // Clear button to quickly clear textfield
     
+    // MARK: - Properties
     @Binding var text: String
     
+    // MARK: - Body
     var body: some View {
         if text.isEmpty == false {
             HStack {
@@ -30,6 +32,7 @@ struct ClearButton: View { // Clear button to quickly clear textfield
     }
 }
 
+// MARK: - Preview
 #Preview {
     ClearButton(text: .constant("Test"))
 }

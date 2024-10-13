@@ -19,7 +19,7 @@ For safety, the Google Places API key is not included in the project's code and 
 
 The **api key** will be provided through the submission comments on **Canvas**.
 
-**It is crucial the API key is added, otherwise the map will not show the hike annotations**.
+***It is crucial the API key is added, otherwise the map will not show the hike annotations***.
 
 To add the API key to the project:
 
